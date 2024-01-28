@@ -36,7 +36,7 @@ export function PollCreateForm() {
   function showImages(e: any) {
     setError("");
     let files = e.target.files as File[];
-    if (files.length > 10) {
+    if (files.length > 5) {
       setError("Maximum of 10 images");
       setUploadedFiles([]);
       e.target.value = "";

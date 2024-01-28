@@ -24,7 +24,7 @@ const Home = () => {
             Farcaster Gallery
           </h1>
           <h2 className="text-md sm:text-xl mx-4">
-            Upload Images To Your Gallery. Max per time (10)
+            Upload Images To Your Gallery. Max per time (5)
           </h2>
           <div className="flex flex-wrap items-center justify-around max-w-4xl my-8 sm:w-full bg-white rounded-md shadow-xl h-full border border-gray-100">
             <PollCreateForm />
