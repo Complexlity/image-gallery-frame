@@ -23,7 +23,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 return res.status(400).send(`Failed to validate message: ${e}`);
             }
 
-            const buttonId = validatedMessage?.data?.frameActionBody?.buttonIndex || 2;
+            let buttonId = validatedMessage?.data?.frameActionBody?.
+                buttonIndex || 2;
+            console.log({validatedMessage})
             // buttonId = req.body.buttonId || 2
             let idSortNext = req.query.id as unknown as string
             let id = idSortNext.slice(0, idSortNext.length - 2)
