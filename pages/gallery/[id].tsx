@@ -9,14 +9,21 @@ export default function Page() {
 	return (
     <>
       <Head>
-        <title>My page title</title>
         <meta property="fc:frame" content="vNext" />
-        <meta property="fc:frame:image" content={`${HOST}/api/image?id=${id}`} />
-        <meta property="fc:frame:post_url" content={`${HOST}/api/toggle?id=${id}`} />
-        <meta property="fc:frame:button:0" content={`${HOST}/api/toggle?id=${id}`} />
+        <meta
+          property="fc:frame:image"
+          content={`https://utfs.io/f/e9206bd3-1b5b-4c3e-9ab8-5fcd6cb52a21-jksl41.jpg`}
+        />
+        <meta
+          property="fc:frame:post_url"
+          content={`${HOST}/api/toggle?id=${id}`}
+        />
+        <meta
+          property="fc:frame:button:0"
+          content={`${HOST}/api/toggle?id=${id}`}
+        />
         <meta property="fc:frame:button:1" content={`Prev`} />
         <meta property="fc:frame:button:2" content={`Next`} />
-
       </Head>
 
       <div>Hello from path {id}</div>
