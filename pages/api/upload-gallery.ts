@@ -72,7 +72,6 @@ export  default async function handler(req: NextApiRequest, res: NextApiResponse
 			return res.status(404).json({success: false, error: "Items with gallery id not found"})
 		}
 
-		return res.status(200).json(values)
 		if (sort === "desc") {
 			returnedImage = Object.values(values).reverse()[+itemNumber]
 		}
