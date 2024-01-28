@@ -12,12 +12,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         try {
 
-            let validatedMessage : Message | undefined = undefined;
+            let validatedMessage: Message | undefined = undefined;
+            let frameMessage;
+            let result
+            console.log({requestBody: req.body})
+
             try {
-                console.log({requestBody: req.body})
-                const frameMessage = Message.decode(Buffer.from(req.body?.trustedData?.messageBytes || '', 'hex'));
+                frameMessage = Message.decode(Buffer.from(req.body?.trustedData?.messageBytes || '', 'hex'));
                 console.log({frameMessage})
-                const result = await client.validateMessage(frameMessage);
+                result = await client.validateMessage(frameMessage);
                 console.log({result})
                 if (result.isOk() && result.value.valid) {
 
@@ -27,6 +30,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 return res.status(400).send(`Failed to validate message: ${e}`);
             }
 
+            console.log({ frameMessage })
+            console.log({result})
             let buttonId = validatedMessage?.data?.frameActionBody?.
                 buttonIndex || 2;
             console.log({validatedMessage})
