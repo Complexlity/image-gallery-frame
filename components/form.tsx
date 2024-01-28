@@ -155,7 +155,7 @@ export function PollCreateForm() {
             <button
               className={clsx(
                 "flex items-center p-1 justify-center px-4 h-10 text-lg border bg-red-500 text-white rounded-md focus:outline-none focus:ring focus:ring-red-300 hover:bg-red-700 focus:bg-red-700",
-                isLoading && "disabled cursor-not-allowed bg-red-100"
+                isLoading && "disabled cursor-not-allowed bg-red-100 hover:bg-red-100 focus:bg-red-100"
               )}
               type="button"
               disabled={isLoading}
@@ -169,7 +169,7 @@ export function PollCreateForm() {
             <button
               className={clsx(
                 "flex items-center p-1 justify-center px-4 h-10 text-lg border bg-blue-500 text-white rounded-md focus:outline-none focus:ring focus:ring-blue-300 hover:bg-blue-700 focus:bg-blue-700",
-                isLoading && "disabled cursor-not-allowed bg-blue-100"
+                isLoading && "disabled cursor-not-allowed bg-blue-100 hover:bg-blue-100 focus:bg-blue-100"
               )}
               type="submit"
               disabled={isLoading}
