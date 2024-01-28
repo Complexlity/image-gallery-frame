@@ -3,6 +3,7 @@
 import clsx from "clsx";
 import {
   ChangeEventHandler,
+  FormEventHandler,
   useOptimistic,
   useRef,
   useState,
@@ -10,18 +11,21 @@ import {
 } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useUploadThing } from "../utils/uploadthing";
+import { useUploadThing, uploadFiles } from "../utils/uploadthing";
 
 export function PollCreateForm() {
   let formRef = useRef<HTMLFormElement>(null);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  let [isPending, startTransition] = useTransition();
-  let [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
+  const [isPending, startTransition] = useTransition();
+  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
 
-  let [error, setError] = useState("");
-  let [imageId, setImageId] = useState("");
-  let imagesRef = useRef<HTMLInputElement>(null);
+  const [error, setError] = useState("");
+  const [imageId, setImageId] = useState("");
+  const imagesRef = useRef<HTMLInputElement>(null);
+  const [isLoading, setIsLoading] = useState(false)
+  const [loadingMessage, setLoadingMessage] = useState('')
+
 
   const { startUpload } = useUploadThing("imageUploader", {
     onClientUploadComplete: () => {},
@@ -31,6 +35,7 @@ export function PollCreateForm() {
     },
     onUploadBegin: () => {
       //  alert("upload has begun");
+      console.log('upload has begun')
     },
   });
 
@@ -61,6 +66,46 @@ export function PollCreateForm() {
     setUploadedFiles([...files]);
   }
 
+  async function handleSubmit(event:any) {
+    console.log("I am submitting");
+    event.preventDefault();
+    if (uploadedFiles.length === 0) {
+      setError("No File Chosen");
+      return;
+    }
+    // event.target.reset()
+    // setUploadedFiles([])
+    // setError('')
+    setIsLoading(true)
+    setLoadingMessage("Uploading Using uploadFiles")
+    let filesUploaded;
+    try {
+
+
+
+      setLoadingMessage("Uploading startUpload")
+      const fileUploadResponse = await startUpload(uploadedFiles).catch(
+        (err) => {
+          console.log({ err });
+        }
+      );
+        filesUploaded = fileUploadResponse
+
+    } catch (error) {
+      console.log({error})
+      setError("Something Went Wrong Uploading the files")
+
+    }
+
+    if (filesUploaded) {
+      
+      event.target.reset();
+      setUploadedFiles([]);
+      setError("");
+    }
+
+  }
+
   return (
     <>
       <div className="mx-8 w-full">
@@ -68,15 +113,7 @@ export function PollCreateForm() {
           className="relative my-8"
           //   ref={formRef}
           //   action={saveWithNewPoll}
-          onSubmit={(event) => {
-            console.log("I am submitting");
-            event.preventDefault();
-            if (uploadedFiles.length === 0) {
-              setError("No File Chosen");
-              return;
-            }
-            formRef.current?.reset();
-          }}
+          onSubmit={handleSubmit}
         >
           <input
             name="image_id"
@@ -100,8 +137,8 @@ export function PollCreateForm() {
             onChange={showImages}
           />
           <div className="filenames">
-            {uploadedFiles.map((file) => {
-              return <li>{file.name}</li>;
+            {uploadedFiles.map((file, index) => {
+              return <li key={`file-${index}`}>{file.name}</li>;
             })}
           </div>
           <small className="text-red-400">{error}</small>
@@ -118,7 +155,6 @@ export function PollCreateForm() {
               bg-red-600
               text-white
               rounded-md
-              w-24
               focus:outline-none
               focus:ring
               focus:ring-red-300
@@ -134,11 +170,13 @@ export function PollCreateForm() {
             </button>
             <button
               className={clsx(
-                "flex items-center p-1 justify-center px-4 h-10 text-lg border bg-blue-500 text-white rounded-md w-24 focus:outline-none focus:ring focus:ring-blue-300 hover:bg-blue-700 focus:bg-blue-700"
+                "flex items-center p-1 justify-center px-4 h-10 text-lg border bg-blue-500 text-white rounded-md focus:outline-none focus:ring focus:ring-blue-300 hover:bg-blue-700 focus:bg-blue-700",
+                isLoading && "disabled cursor-not-allowed"
               )}
               type="submit"
+              disabled={isLoading}
             >
-              Create
+              {isLoading ? loadingMessage : "Create"}
             </button>
           </div>
         </form>
