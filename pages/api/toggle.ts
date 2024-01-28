@@ -23,12 +23,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 return res.status(400).send(`Failed to validate message: ${e}`);
             }
 
-            const buttonId = validatedMessage?.data?.frameActionBody?.buttonIndex || 2;
-            let id = req.query.id as unknown as string
+            let buttonId = validatedMessage?.data?.frameActionBody?.buttonIndex || 2;
+            buttonId = req.body.buttonId || 2
+            let idSortNext = req.query.id as unknown as string
+            let id = idSortNext.slice(0, idSortNext.length - 2)
+            let queryySort = parseInt(idSortNext[idSortNext.length - 2])
+            console.log({queryySort})
+            let querySort = queryySort == 0 ? "desc" : "asc"
+
+
             // let buttonId = req.body.buttonId || 2
             console.log({id})
             console.log({buttonId})
-            const querySort = req.query.sort
+            // const querySort = req.query.sort
             console.log({querySort})
             let sort
             switch (buttonId) {
@@ -47,7 +54,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             }
 
             console.log({sort})
-            let curr = Number(req.query.next)
+            let curr = Number(idSortNext[idSortNext.length - 1])
             let next;
 
 
@@ -101,7 +108,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             };
             console.log({currentItem})
 
-
+let finalSort = sort === "desc" ? 0 : 1
 
 
             // Return an HTML response
@@ -110,12 +117,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       <!DOCTYPE html>
       <html>
         <head>
-          <title>Vote Recorded</title>
-          <meta property="og:title" content="Vote Recorded">
+          <title>Gallery Item ${curr}</title>
+          <meta property="og:title" content="Gallery Item ${curr}">
           <meta property="og:image" content="${currentItem.url}">
           <meta name="fc:frame" content="vNext">
           <meta name="fc:frame:image" content="${currentItem.url}">
-          <meta name="fc:frame:post_url" content="${process.env['HOST']}/api/toggle?id=${id}&sort=${sort}&next=${next}">
+          <meta name="fc:frame:post_url" content="${process.env['HOST']}/api/toggle?id=${id}${finalSort}${next}">
           <meta name="fc:frame:button:1" content="Prev">
           <meta name="fc:frame:button:2" content="Next">
           <meta name="fc:frame:button:3" content="Sort(asc)">
