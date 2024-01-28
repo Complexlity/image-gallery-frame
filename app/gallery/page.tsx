@@ -3,7 +3,15 @@ import Link from 'next/link';
 
 
 
-export default function Page({ galleryIds }: { galleryIds: string[] } ) {
+export default async function Page() {
+  	const SEVEN_DAYS_IN_MS = 1000 * 60 * 60 * 24 * 7;
+    let galleryIds = await kv.zrange(
+      "gallery_by_date",
+      Date.now(),
+      Date.now() - SEVEN_DAYS_IN_MS,
+      { byScore: true, rev: true }
+    );
+
 	return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
       <main className="flex flex-col items-center justify-center flex-1 px-4 sm:px-20 text-center">
@@ -12,9 +20,15 @@ export default function Page({ galleryIds }: { galleryIds: string[] } ) {
           {galleryIds.map((id, index) => {
             // returns links to poll ids
             return (
+              // @ts-expect-error
               <div key={id}>
                 <a href={`/gallery/${id}`} className="underline">
-                  <p className="text-md sm:text-xl mx-4">{id}</p>
+
+                  <p className="text-md
+                  sm:text-xl mx-4">
+                  {/* @ts-expect-error */}
+                    {id}
+                  </p>
                 </a>
               </div>
             );
@@ -31,17 +45,5 @@ export default function Page({ galleryIds }: { galleryIds: string[] } ) {
 }
 
 
-export async function getServerSideProps() {
-	const SEVEN_DAYS_IN_MS = 1000 * 60 * 60 * 24 * 7;
-	console.log("Getting gallery id's")
-	 let galleryIds = await kv.zrange(
-     "gallery_by_date",
-     Date.now(),
-     Date.now() - SEVEN_DAYS_IN_MS,
-     { byScore: true, rev: true }
-	);
-	console.log({galleryIds})
 
 
-	 return {props: {galleryIds}}
-}
