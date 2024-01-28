@@ -14,13 +14,11 @@ export default function Page() {
         <meta property="fc:frame:image" content={`${HOST}/api/image?id=${id}`} />
         <meta property="fc:frame:post_url" content={`${HOST}/api/toggle?id=${id}`} />
         <meta property="fc:frame:button:0" content={`${HOST}/api/toggle?id=${id}`} />
-        <meta property="fc:frame:button:0" content={`Prev`} />
-        <meta property="fc:frame:button:1" content={`Next`} />
-        <meta property="og:title" content="My page title" key="title" />
+        <meta property="fc:frame:button:1" content={`Prev`} />
+        <meta property="fc:frame:button:2" content={`Next`} />
+
       </Head>
-      <Head>
-        <meta property="og:title" content="My new title" key="title" />
-      </Head>
+
       <div>Hello from path {id}</div>
     </>
   );
