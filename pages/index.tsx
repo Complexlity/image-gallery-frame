@@ -2,15 +2,16 @@ import { type NextPage } from "next";
 import Head from "next/head";
 
 import { PollCreateForm } from "../components/form";
+import Link from "next/link";
 
 const Home = () => {
   return (
     <>
       <Head>
-        <title>Home | Creative Art MarketPlace</title>
+        <title>Farcaster Frames Gallery</title>
         <meta
           name="description"
-          content="A place for all to discover, create and purchase unique NFTs"
+          content="A place to show images/gifs on farcaster frames"
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -28,6 +29,11 @@ const Home = () => {
           <div className="flex flex-wrap items-center justify-around max-w-4xl my-8 sm:w-full bg-white rounded-md shadow-xl h-full border border-gray-100">
             <PollCreateForm />
           </div>
+          <Link href="/gallery">
+            <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+              All Galleries
+            </button>
+          </Link>
         </main>
       </div>
     </>
