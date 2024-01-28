@@ -2,22 +2,17 @@
 
 import clsx from "clsx";
 import {
-  ChangeEventHandler,
-  FormEventHandler,
-  useOptimistic,
   useRef,
   useState,
-  useTransition,
+  useTransition
 } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useUploadThing, uploadFiles } from "../utils/uploadthing";
+import { useUploadThing } from "../utils/uploadthing";
+import { customAlphabet } from "nanoid";
 
 export function PollCreateForm() {
-  let formRef = useRef<HTMLFormElement>(null);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isPending, startTransition] = useTransition();
+  const nanoid = customAlphabet('0123456789abcdefghijklmnopqrstuvwxyz', 7)
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
 
   const [error, setError] = useState("");
@@ -35,7 +30,6 @@ export function PollCreateForm() {
     },
     onUploadBegin: () => {
       //  alert("upload has begun");
-      console.log('upload has begun')
     },
   });
 
@@ -50,13 +44,11 @@ export function PollCreateForm() {
     }
     for (let i = 0; i < files.length; i++) {
       const curr = files[i];
+      const currType = curr.type.replace(/(.*)\//g, "")
       if (
-        !curr.name.includes("png") &&
-        !curr.name.includes("jpeg") &&
-        !curr.name.includes("jpg") &&
-        !curr.name.includes("webp")
+        !(['png', 'jpeg', 'jpg', 'webp', 'gif'].includes(currType))
       ) {
-        setError("Only jpeg, png, jpg and webp files are allowed");
+        setError("Only jpeg, png, jpg ,webp and gifs files are allowed");
         setUploadedFiles([]);
         e.target.value = "";
         return;
@@ -67,7 +59,6 @@ export function PollCreateForm() {
   }
 
   async function handleSubmit(event:any) {
-    console.log("I am submitting");
     event.preventDefault();
     if (uploadedFiles.length === 0) {
       setError("No File Chosen");
@@ -77,13 +68,10 @@ export function PollCreateForm() {
     // setUploadedFiles([])
     // setError('')
     setIsLoading(true)
-    setLoadingMessage("Uploading Using uploadFiles")
+    setLoadingMessage("Uploading Images...")
+
     let filesUploaded;
     try {
-
-
-
-      setLoadingMessage("Uploading startUpload")
       const fileUploadResponse = await startUpload(uploadedFiles).catch(
         (err) => {
           console.log({ err });
@@ -93,17 +81,39 @@ export function PollCreateForm() {
 
     } catch (error) {
       console.log({error})
-      setError("Something Went Wrong Uploading the files")
+      setError("Something went wrong uploading the files")
 
     }
 
     if (filesUploaded) {
-      
-      event.target.reset();
-      setUploadedFiles([]);
-      setError("");
-    }
+      setLoadingMessage("Creating Gallery...")
+      const filesToSendToKVStore = filesUploaded.map((file, index) => {
+        return {url: file.url, created_at: Date.now() + index}
+      })
 
+      const galleryId = imageId || nanoid()
+      const payload = {
+        galleryId,
+        filesToSendToKVStore
+      }
+      try {
+        const res = await fetch("api/upload-gallery", {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        })
+
+        event.target.reset();
+        setUploadedFiles([]);
+        setError("");
+      } catch (error) {
+        console.log({ error })
+        setError("Something went wrong creating gallery")
+      }
+      finally {
+        setIsLoading(false)
+      }
+
+    }
   }
 
   return (
@@ -111,8 +121,7 @@ export function PollCreateForm() {
       <div className="mx-8 w-full">
         <form
           className="relative my-8"
-          //   ref={formRef}
-          //   action={saveWithNewPoll}
+
           onSubmit={handleSubmit}
         >
           <input
@@ -132,7 +141,7 @@ export function PollCreateForm() {
             type="file"
             id="nft"
             name="nft"
-            accept="image/png, image/jpeg, image/jpg, image/webp"
+            accept="image/png, image/jpeg, image/jpg, image/webp, image/gif"
             className="pl-3 pr-28 py-3 mt-1 text-lg block w-full border border-gray-200 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300"
             onChange={showImages}
           />
@@ -144,23 +153,12 @@ export function PollCreateForm() {
           <small className="text-red-400">{error}</small>
           <div className={"pt-4 flex justify-end gap-4"}>
             <button
-              className="flex
-              items-center
-              p-1
-              justify-center
-              px-4
-              h-10
-              text-lg
-              border
-              bg-red-600
-              text-white
-              rounded-md
-              focus:outline-none
-              focus:ring
-              focus:ring-red-300
-              hover:bg-red-700
-              focus:bg-red-700"
+              className={clsx(
+                "flex items-center p-1 justify-center px-4 h-10 text-lg border bg-red-500 text-white rounded-md focus:outline-none focus:ring focus:ring-red-300 hover:bg-red-700 focus:bg-red-700",
+                isLoading && "disabled cursor-not-allowed bg-red-100"
+              )}
               type="button"
+              disabled={isLoading}
               onClick={() => {
                 setUploadedFiles([]);
                 imagesRef.current!.value = "";
@@ -171,7 +169,7 @@ export function PollCreateForm() {
             <button
               className={clsx(
                 "flex items-center p-1 justify-center px-4 h-10 text-lg border bg-blue-500 text-white rounded-md focus:outline-none focus:ring focus:ring-blue-300 hover:bg-blue-700 focus:bg-blue-700",
-                isLoading && "disabled cursor-not-allowed"
+                isLoading && "disabled cursor-not-allowed bg-blue-100"
               )}
               type="submit"
               disabled={isLoading}
