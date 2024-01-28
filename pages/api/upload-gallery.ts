@@ -6,23 +6,39 @@ type PostBody = {
 	filesToSendToKVStore: {
 		url: string,
 		created_at: number
-	}
+	}[]
+
 }
 
-export  default async function handler(req: NextApiRequest, res: NextApiResponse) {
+type ResponseData = { success: true, data: Record<string, unknown> } | { success: false, error: string}
+
+export  default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseData>) {
 	if (req.method === "POST") {
 		//TODO: Verify with zod
 		let values = req.body
 
 
-		values = JSON.parse(values) as PostBody
+		values = JSON.parse(values)
+		//TODO: Use zod
+		const parsedValues = values as unknown as PostBody
 
 
+		try {
 
-		await kv.hset(values.galleryId, values.filesToSendToKVStore)
-		return res.status(200).json({ result: values })
+			//@ts-expect-error
+			await kv.hset(parsedValues.galleryId, parsedValues.filesToSendToKVStore)
+			await kv.zadd("gallery_by_date", {
+				score: Number(parsedValues.filesToSendToKVStore[0].created_at),
+				member: parsedValues.galleryId,
+			});
+
+		} catch (error) {
+			console.log({ error })
+			return res.status(500).json({success: false, error: "Error uploading files to store"})
+		}
 
 
+		return res.status(200).json({success:true,  data: values })
 	}
 	else {
 		const galleryId = req.query.galleryId as string
@@ -31,11 +47,17 @@ export  default async function handler(req: NextApiRequest, res: NextApiResponse
 		let returnedImage;
 
 		if (!galleryId) {
-			return res.status(422).json({message: "Please Provide a galleryId"})
+			return res.status(422).json({success: false ,error: "Please Provide a galleryId"})
 		}
-		const values = await kv.hgetall(galleryId)
+		let values
+		try {
+			values = await kv.hgetall(galleryId)
+		} catch (error) {
+			console.log({ error })
+			return res.status(500).json({success: false, error: "Error getting files from store"})
+		}
 		if (!values) {
-			return res.status(404).json({message: "Items with gallery id not found"})
+			return res.status(404).json({success: false, error: "Items with gallery id not found"})
 		}
 
 
@@ -43,9 +65,11 @@ export  default async function handler(req: NextApiRequest, res: NextApiResponse
 			returnedImage = Object.values(values).reverse()[+itemNumber]
 		}
 		else {
-			returnedImage = values[+itemNumber]
+			returnedImage = values[+itemNumber] as Record<string, unknown>
 		}
-		return res.status(200).json({ result: returnedImage })
+		return res
+      .status(200)
+      .json({ success: true, data: returnedImage as Record<string, unknown> });
 	}
 }
 
