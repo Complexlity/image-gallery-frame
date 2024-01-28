@@ -82,7 +82,6 @@ export function PollCreateForm() {
     } catch (error) {
       console.log({error})
       setError("Something went wrong uploading the files")
-
     }
 
     if (filesUploaded) {
@@ -102,18 +101,19 @@ export function PollCreateForm() {
           body: JSON.stringify(payload)
         })
 
+        const result = await res.json()
+        if(!result.ok) throw new Error("Somehting went wrong creating gallery")
         event.target.reset();
         setUploadedFiles([]);
         setError("");
       } catch (error) {
         console.log({ error })
-        setError("Something went wrong creating gallery")
-      }
-      finally {
-        setIsLoading(false)
+        //@ts-expect-error message not found
+        setError(error?.message)
       }
 
     }
+    setIsLoading(false)
   }
 
   return (
