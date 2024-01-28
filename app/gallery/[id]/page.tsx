@@ -6,12 +6,21 @@ type Props = {
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
-async function getImageUrl(id: string, itemNumber = 0) {
-  const sort = "asc";
-
-  let values = await kv.hgetall(id) as Record<string, unknown>
-  let returnedImage = Object.values(values)[+itemNumber] as  {url: string, created_at: number}
-  return { image: returnedImage.url, item: itemNumber }
+export async function getImageData(id: string, itemNumber = 0, sort = "asc") {
+  let values = (await kv.hgetall(id)) as Record<string, unknown>;
+  let returnedItem;
+  if (sort === "desc") {
+    returnedItem = Object.values(values).reverse()[+itemNumber] as {
+      url: string;
+      created_at: number;
+    };
+  } else {
+    returnedItem = Object.values(values)[+itemNumber] as {
+      url: string;
+      created_at: number;
+    };
+  }
+  return { image: returnedItem.url, next: itemNumber + 1, sort };
 }
 
 export async function generateMetadata(
@@ -20,12 +29,12 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   // read route params
   const id = params.id;
-  const imageUrl = await getImageUrl(id)
+  const imageData = await getImageData(id);
 
   const fcMetadata: Record<string, string> = {
     "fc:frame": "vNext",
-    "fc:frame:post_url": `${process.env["HOST"]}/api/toggle?id=${id}`,
-    "fc:frame:image": `${imageUrl.image}`,
+    "fc:frame:post_url": `${process.env["HOST"]}/api/toggle?id=${id}&sort=${imageData.sort}&next=${imageData.next}`,
+    "fc:frame:image": `${imageData.image}`,
     "fc:frame:button:1": "Prev",
     "fc:frame:button:2": "Next",
     "fc:frame:button:3": "Sort(asc)",
@@ -36,9 +45,7 @@ export async function generateMetadata(
     title: id,
     openGraph: {
       title: id,
-      images: [
-        `${imageUrl.image}`,
-      ],
+      images: [`${imageData.image}`],
     },
     other: {
       ...fcMetadata,
@@ -51,7 +58,7 @@ export default function Page({ params }: { params: { id: string } }) {
   const id = params.id;
   return (
     <>
-      <div>Hello from path {id}</div>
+      <div></div>
     </>
   );
 }
