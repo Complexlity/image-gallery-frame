@@ -3,11 +3,44 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { join } from 'path';
 import satori from "satori";
 import sharp from 'sharp';
+import { kv } from "@vercel/kv";
+
 
 const fontPath = join(process.cwd(), 'Roboto-Regular.ttf')
 let fontData = fs.readFileSync(fontPath)
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    const galleryId = req.query.galleryId as string;
+    const sort = req.query.sort || "asc";
+    const itemNumber = req.query.item || 0;
+    let returnedImage;
+
+    if (!galleryId) {
+      return res
+        .status(422)
+        .json({ success: false, error: "Please Provide a galleryId" });
+    }
+    let values;
+    try {
+      values = await kv.hgetall(galleryId);
+    } catch (error) {
+      console.log({ error });
+      return res
+        .status(500)
+        .json({ success: false, error: "Error getting files from store" });
+    }
+    if (!values) {
+      return res
+        .status(404)
+        .json({ success: false, error: "Items with gallery id not found" });
+    }
+
+    if (sort === "desc") {
+      returnedImage = Object.values(values).reverse()[+itemNumber];
+    } else {
+      returnedImage = values[+itemNumber] as Record<string, unknown>;
+    }
+
     try {
 
         const svg = await satori(
