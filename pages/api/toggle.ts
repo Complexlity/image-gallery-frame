@@ -136,8 +136,8 @@ let finalSort = sort === "desc" ? 0 : 1
           <meta name="fc:frame:post_url" content="${process.env['HOST']}/api/toggle?id=${id}${finalSort}${next}">
           <meta name="fc:frame:button:1" content="Prev">
           <meta name="fc:frame:button:2" content="Next">
-          <meta name="fc:frame:button:3" content="Old>New">
-          <meta name="fc:frame:button:4" content="New>Old">
+          <meta name="fc:frame:button:3" content="Old->New">
+          <meta name="fc:frame:button:4" content="New->Old">
         </head>
         <body>
 
