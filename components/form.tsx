@@ -9,8 +9,12 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import { useUploadThing } from "../utils/uploadthing";
 import { customAlphabet } from "nanoid";
+import { useRouter } from "next/navigation";
+
+const HOST = process.env.NEXT_PUBLIC_HOST
 
 export function PollCreateForm() {
+  console.log({HOST})
 
   const nanoid = customAlphabet('0123456789abcdefghijklmnopqrstuvwxyz', 7)
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
@@ -20,7 +24,9 @@ export function PollCreateForm() {
   const imagesRef = useRef<HTMLInputElement>(null);
   const [isLoading, setIsLoading] = useState(false)
   const [loadingMessage, setLoadingMessage] = useState('')
-
+  const [warpcastUrl, setWarpcastUrl] = useState('')
+  const [copied, setCopied] = useState(false)
+  const router = useRouter()
 
   const { startUpload } = useUploadThing("imageUploader", {
     onClientUploadComplete: () => {},
@@ -106,7 +112,9 @@ export function PollCreateForm() {
         event.target.reset();
         setUploadedFiles([]);
         setError("");
+        setWarpcastUrl(`${HOST}/gallery/${galleryId}`)
         setImageId('')
+
       } catch (error) {
         console.log({ error })
         //@ts-expect-error message not found
@@ -115,20 +123,17 @@ export function PollCreateForm() {
 
     }
     setIsLoading(false)
+
   }
 
   return (
     <>
       <div className="mx-8 w-full">
-        <form
-          className="relative my-8"
-
-          onSubmit={handleSubmit}
-        >
+        <form className="relative my-8" onSubmit={handleSubmit}>
           <input
             name="image_id"
             id="image_id"
-            placeholder="Id Of Your Image (optional)"
+            placeholder="Id of existing or new gallery (optional)"
             className="pl-3 pr-28 py-3 mt-1 text-lg block w-full border border-gray-200 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300"
             value={imageId}
             onChange={(e) => {
@@ -156,7 +161,8 @@ export function PollCreateForm() {
             <button
               className={clsx(
                 "flex items-center p-1 justify-center px-4 h-10 text-lg border bg-red-500 text-white rounded-md focus:outline-none focus:ring focus:ring-red-300 hover:bg-red-700 focus:bg-red-700",
-                isLoading && "disabled cursor-not-allowed bg-red-100 hover:bg-red-100 focus:bg-red-100"
+                isLoading &&
+                  "disabled cursor-not-allowed bg-red-100 hover:bg-red-100 focus:bg-red-100"
               )}
               type="button"
               disabled={isLoading}
@@ -170,7 +176,8 @@ export function PollCreateForm() {
             <button
               className={clsx(
                 "flex items-center p-1 justify-center px-4 h-10 text-lg border bg-blue-500 text-white rounded-md focus:outline-none focus:ring focus:ring-blue-300 hover:bg-blue-700 focus:bg-blue-700",
-                isLoading && "disabled cursor-not-allowed bg-blue-100 hover:bg-blue-100 focus:bg-blue-100"
+                isLoading &&
+                  "disabled cursor-not-allowed bg-blue-100 hover:bg-blue-100 focus:bg-blue-100"
               )}
               type="submit"
               disabled={isLoading}
@@ -179,6 +186,24 @@ export function PollCreateForm() {
             </button>
           </div>
         </form>
+
+        {warpcastUrl && <div className="flex items-center gap-2 bg-purple-900 text-white p-4 m-2">
+          <span>
+            <span className="m-1 text-green-200">
+            {warpcastUrl}
+            </span>
+          </span>
+          <button
+            className={clsx("bg-orange-600 px-2 py-1 rounded-lg", )}
+            onClick={() => {
+              navigator.clipboard.writeText(warpcastUrl);
+              setCopied(true);
+            }}
+          >
+            {copied ? "Copied" : "Copy"}
+          </button>
+        </div>
+        }
       </div>
       <div className="w-full"></div>
     </>
