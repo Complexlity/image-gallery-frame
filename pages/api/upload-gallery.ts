@@ -25,12 +25,24 @@ export  default async function handler(req: NextApiRequest, res: NextApiResponse
 
 		try {
 
-			//@ts-expect-error
-			await kv.hset(parsedValues.galleryId, parsedValues.filesToSendToKVStore)
-			await kv.zadd("gallery_by_date", {
-				score: Number(parsedValues.filesToSendToKVStore[0].created_at),
-				member: parsedValues.galleryId,
-			});
+			let preValues = await kv.hgetall(parsedValues.galleryId);
+			console.log({ preValues })
+			if (preValues) {
+				let preValuesArray = Object.values(preValues)
+				const newValues = [...preValuesArray, ...parsedValues.filesToSendToKVStore]
+				console.log(newValues)
+				//Add to id if it already exists
+				await kv.hset(parsedValues.galleryId, {...newValues})
+			}
+			else {
+				//Create new id key if gallery doesn't exist
+				//@ts-expect-error
+				await kv.hset(parsedValues.galleryId, parsedValues.filesToSendToKVStore)
+				await kv.zadd("gallery_by_date", {
+					score: Number(parsedValues.filesToSendToKVStore[0].created_at),
+					member: parsedValues.galleryId,
+				});
+			}
 
 		} catch (error) {
 			console.log({ error })
@@ -60,7 +72,7 @@ export  default async function handler(req: NextApiRequest, res: NextApiResponse
 			return res.status(404).json({success: false, error: "Items with gallery id not found"})
 		}
 
-
+		return res.status(200).json(values)
 		if (sort === "desc") {
 			returnedImage = Object.values(values).reverse()[+itemNumber]
 		}
