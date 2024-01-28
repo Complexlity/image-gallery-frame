@@ -26,6 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
             const buttonId = validatedMessage?.data?.frameActionBody?.buttonIndex || 2;
             let id = req.query.id as unknown as string
+            // let buttonId = req.body.buttonId || 2
             console.log({id})
             console.log({buttonId})
             const querySort = req.query.sort
@@ -86,6 +87,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     next = curr - 1
                     curr = curr - 2
                 }
+            }
+            else if (buttonId === 3 || buttonId === 4) {
+                next = curr
+                curr = curr - 1
             }
 
             console.log({ curr });
