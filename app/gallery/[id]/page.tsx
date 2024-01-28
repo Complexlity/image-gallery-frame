@@ -6,7 +6,7 @@ type Props = {
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
-export async function getImageData(id: string, itemNumber = 0, sort = "asc") {
+async function getImageData(id: string, itemNumber = 0, sort = "asc") {
   let values = (await kv.hgetall(id)) as Record<string, unknown>;
   let returnedItem;
   if (sort === "desc") {
