@@ -25,7 +25,7 @@ export async function generateMetadata(
   const fcMetadata: Record<string, string> = {
     "fc:frame": "vNext",
     "fc:frame:post_url": `${process.env["HOST"]}/api/toggle?id=${id}`,
-    "fc:frame:image": `${imageUrl}`,
+    "fc:frame:image": `${imageUrl.image}`,
     "fc:frame:button:1": "Prev",
     "fc:frame:button:2": "Next",
     "fc:frame:button:3": "Sort(asc)",
@@ -37,7 +37,7 @@ export async function generateMetadata(
     openGraph: {
       title: id,
       images: [
-        `${imageUrl}`,
+        `${imageUrl.image}`,
       ],
     },
     other: {
