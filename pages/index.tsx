@@ -1,7 +1,7 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 
-import { PollCreateForm } from "../components/form";
+import { GalleryCreateForm } from "../components/form";
 import Link from "next/link";
 
 const Home = () => {
@@ -27,7 +27,7 @@ const Home = () => {
             Upload Images To Your Gallery. Max per time (5)
           </h2>
           <div className="flex flex-wrap items-center justify-around max-w-4xl my-8 sm:w-full bg-white rounded-md shadow-xl h-full border border-gray-100">
-            <PollCreateForm />
+            <GalleryCreateForm />
           </div>
           <Link href="/gallery">
             <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">

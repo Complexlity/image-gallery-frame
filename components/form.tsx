@@ -13,8 +13,7 @@ import { useRouter } from "next/navigation";
 
 const HOST = process.env.NEXT_PUBLIC_HOST
 
-export function PollCreateForm() {
-  console.log({HOST})
+export function GalleryCreateForm() {
 
   const nanoid = customAlphabet('0123456789abcdefghijklmnopqrstuvwxyz', 7)
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
@@ -189,7 +188,9 @@ export function PollCreateForm() {
 
         {warpcastUrl && <div className="flex items-center gap-2 bg-purple-900 text-white p-4 m-2">
           <span>
+            Share on warpcast:
             <span className="m-1 text-green-200">
+
             {warpcastUrl}
             </span>
           </span>
