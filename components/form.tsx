@@ -106,6 +106,7 @@ export function PollCreateForm() {
         event.target.reset();
         setUploadedFiles([]);
         setError("");
+        setImageId('')
       } catch (error) {
         console.log({ error })
         //@ts-expect-error message not found
