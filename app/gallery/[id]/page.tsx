@@ -37,8 +37,8 @@ export async function generateMetadata(
     "fc:frame:image": `${imageData.image}`,
     "fc:frame:button:1": "Prev",
     "fc:frame:button:2": "Next",
-    "fc:frame:button:3": "Sort(asc)",
-    "fc:frame:button:4": "Sort(desc)",
+    "fc:frame:button:3": "Old>New",
+    "fc:frame:button:4": "New>Old",
   };
 
   return {
