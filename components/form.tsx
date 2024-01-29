@@ -173,7 +173,7 @@ export function GalleryCreateForm() {
   return (
     <>
       <div className="mx-8 w-full">
-        <form className="relative my-8" onSubmit={handleSubmit}>
+        <form className="relative my-8 space-y-4" onSubmit={handleSubmit}>
           <input
             name="image_id"
             id="image_id"
@@ -184,6 +184,8 @@ export function GalleryCreateForm() {
               setImageId(e.target.value);
             }}
           />
+          <div>
+
 
           <select
             onChange={(e) => {
@@ -196,20 +198,9 @@ export function GalleryCreateForm() {
           >
             <option value="public">Public</option>
             <option value="private">Private</option>
-          </select>
-          {visibility === "private" && (
-            <div>
-              <input
-                name="password"
-                id="password"
-                placeholder="Enter a password"
-                className="pl-3 pr-28 py-3 mt-1 text-lg block w-full border border-gray-200 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300"
-                value={password}
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                }}
-              />
-              <details className="text-start pl-3 pr-28 mt-1">
+            </select>
+            {visibility === "private" &&
+            <details className="text-start pl-3 pr-28 mt-1">
                 <summary>What are private galleries?</summary>
                 <ul>
                   <li>
@@ -218,10 +209,24 @@ export function GalleryCreateForm() {
                   </li>
                   <li>
                     2. They cannot be updated without knowing the initial
-                    creation password
+                    creation password (leave blank if you don't want to password it but still make it private)
                   </li>
                 </ul>
-              </details>
+              </details> }
+            </div>
+          {visibility === "private" && (
+            <div>
+              <input
+                name="password"
+                id="password"
+                placeholder="Enter a password (optional)"
+                className="pl-3 pr-28 py-3 mt-1 text-lg block w-full border border-gray-200 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300"
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
+              />
+
             </div>
           )}
 
@@ -250,7 +255,7 @@ export function GalleryCreateForm() {
               name=""
               id=""
               value={sortingType}
-              className="w-full border-2  rounded-md border-gray-800 cursor-pointer"
+              className="w-full border-2  rounded-md border-gray-400 focus:border-gray-800 cursor-pointer"
             >
               <option value="default" >System Default</option>
               <option value="name">Name</option>
@@ -264,7 +269,7 @@ export function GalleryCreateForm() {
               name=""
               id=""
               value={sortingMethod}
-              className="w-full border-2  rounded-md border-gray-800 cursor-pointer"
+              className="w-full border-2  rounded-md border-gray-500 focus:border-gray-800 cursor-pointer"
             >
               <option value="asc">Ascending</option>
               <option value="desc">Descending</option>
