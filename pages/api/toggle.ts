@@ -20,8 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               const messageBytes = req.body?.trustedData?.messageBytes || "";
               console.log({ messageBytes });
               frameMessage = Message.decode(Buffer.from(messageBytes, "hex"));
-              //@ts-expect-error
-              console.log({ frameActionBody: frameMessage?.frameActionBody });
+
               result = await client.validateMessage(frameMessage);
             //   console.log({ resultMessage: result.message });
               if (result.isOk() && result.value.valid) {
@@ -36,7 +35,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             // console.log({result})
             // let buttonId = validatedMessage?.data?.frameActionBody?.
             //     buttonIndex || 2;
-            console.log({validatedMessage})
+            console.log({frameActionBody: validatedMessage?.data?.frameActionBody})
             let buttonId = req.body.untrustedData.buttonIndex || 2
             // console.log({buttonId})
             let idSortNext = req.query.id as unknown as string
