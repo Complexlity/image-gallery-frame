@@ -148,7 +148,6 @@ export function GalleryCreateForm() {
         setPassword('')
         // setVisibility("public")
         // setPasswordError("")
-
       } catch (error) {
         console.log({ error })
         //@ts-expect-error message not in error

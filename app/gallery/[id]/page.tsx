@@ -1,6 +1,9 @@
 import { kv } from "@vercel/kv";
 import { Metadata, ResolvingMetadata } from "next";
 
+
+// Opt out of caching for all data requests in the route segment
+export const dynamic = 'force-dynamic'
 type Props = {
   params: { id: string };
   searchParams: { [key: string]: string | string[] | undefined };
