@@ -9,7 +9,7 @@ const client = getSSLHubRpcClient(HUB_URL);
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'POST') {
-        console.log({requestBody: req.body})
+        // console.log({requestBody: req.body})
         try {
 
             let validatedMessage: Message | undefined = undefined;
@@ -17,16 +17,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             let result
 
             try {
-                const messageBytes = req.body?.trustedData?.messageBytes || ''
-                console.log({messageBytes})
-                frameMessage = Message.decode(Buffer.from(messageBytes, 'hex'));
-                console.log({frameMessage})
-                result = await client.validateMessage(frameMessage);
-                console.log({result})
-                if (result.isOk() && result.value.valid) {
-
-                    validatedMessage = result.value.message;
-                }
+              const messageBytes = req.body?.trustedData?.messageBytes || "";
+              console.log({ messageBytes });
+              frameMessage = Message.decode(Buffer.from(messageBytes, "hex"));
+              //@ts-expect-error
+              console.log({ frameActionBody: frameMessage?.frameActionBody });
+              result = await client.validateMessage(frameMessage);
+            //   console.log({ resultMessage: result.message });
+              if (result.isOk() && result.value.valid) {
+                validatedMessage = result.value.message;
+              }
             } catch (e) {
                 console.log({e})
                 // return res.status(400).send(`Failed to validate message: ${e}`);
@@ -36,9 +36,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             // console.log({result})
             // let buttonId = validatedMessage?.data?.frameActionBody?.
             //     buttonIndex || 2;
-            // console.log({validatedMessage})
+            console.log({validatedMessage})
             let buttonId = req.body.untrustedData.buttonIndex || 2
-            console.log({buttonId})
+            // console.log({buttonId})
             let idSortNext = req.query.id as unknown as string
             let id = idSortNext.slice(0, idSortNext.length - 2)
             let queryySort = parseInt(idSortNext[idSortNext.length - 2])
@@ -115,8 +115,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 // curr = curr - 1
             }
 
-            console.log({ curr });
-            console.log({ next });
+            // console.log({ curr });
+            // console.log({ next });
 
             let currentItem = sortedValues[curr] as {
               url: string;
