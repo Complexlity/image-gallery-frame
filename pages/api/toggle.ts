@@ -106,8 +106,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 }
             }
             else if (buttonId === 3 || buttonId === 4) {
-                next = curr
-                curr = curr - 1
+                curr = 0
+                next = 1
+                // next = curr
+                // curr = curr - 1
             }
 
             console.log({ curr });
