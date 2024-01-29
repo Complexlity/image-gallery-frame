@@ -220,7 +220,7 @@ export function GalleryCreateForm() {
             name="image_id"
             id="image_id"
             placeholder="Id of existing or new gallery (optional)"
-            className="pl-3 pr-28 py-3 mt-1 text-lg block w-full border border-gray-200 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300"
+            className="pl-3 pr-28 py-3 mt-1 text-lg block w-full border border-gray-400 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300"
             value={imageId}
             onChange={(e) => {
               setImageId(e.target.value);
@@ -248,7 +248,7 @@ export function GalleryCreateForm() {
               name=""
               id=""
               value={visibility}
-              className="pl-3 pr-28 py-3 mt-1 text-lg block w-full border border-gray-200 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300"
+              className="pl-3 pr-28 py-3 mt-1 text-lg block w-full border border-gray-400 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300"
             >
               <option value="public">Public</option>
               <option value="private">Private</option>
@@ -277,7 +277,7 @@ export function GalleryCreateForm() {
               name="password"
               id="password"
               placeholder="Enter a password (optional)"
-              className="pl-3 pr-28 py-3 mt-1 text-lg block w-full border border-gray-200 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300"
+              className="pl-3 pr-28 py-3 mt-1 text-lg block w-full border border-gray-400 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300"
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
@@ -304,7 +304,7 @@ export function GalleryCreateForm() {
             id="nft"
             name="nft"
             accept="image/png, image/jpeg, image/jpg, image/webp, image/gif"
-            className="pl-3 pr-28 py-3 mt-1 text-lg block w-full border border-gray-200 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300"
+            className="pl-3 pr-28 py-3 mt-1 text-lg block w-full border border-gray-400 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300"
             onChange={showImages}
           />
           <div className="filenames">
@@ -317,7 +317,7 @@ export function GalleryCreateForm() {
             })}
           </div>
           {/* <small className="text-red-400">{error}</small> */}
-          <div className="flex items-center py-3  px-4 mt-1 text-lg w-full border border-gray-200 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300 gap-2">
+          <div className="flex items-center py-3  px-4 mt-1 text-lg w-full border border-gray-400 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300 gap-2">
             <span className="w-full text-start">Sort By: </span>
             <select
               onChange={(e) => {
