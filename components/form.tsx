@@ -26,15 +26,16 @@ export function GalleryCreateForm() {
   const [warpcastUrl, setWarpcastUrl] = useState('')
   const [copied, setCopied] = useState(false)
   const router = useRouter()
-  const [visibility, setVisibility] = useState('public')
+  // const [visibility, setVisibility] = useState('public')
   const [password, setPassword] = useState('')
+  // const [passwordError, setPasswordError] = useState("")
   const [sortingType, setSortingType] = useState('')
   const [sortingMethod, setSortingMethod] = useState('asc')
 
   const { startUpload } = useUploadThing("imageUploader", {
     onClientUploadComplete: () => {},
     onUploadError: () => {
-      alert("error occurred while uploading");
+      // alert("error occurred while uploading");
       throw new Error("something went wrong while uploading");
     },
     onUploadBegin: () => {
@@ -67,12 +68,17 @@ export function GalleryCreateForm() {
     setInitialUploadSortingType([...files]);
   }
 
-  async function handleSubmit(event:any) {
+  async function handleSubmit(event: any) {
+    setError('')
     event.preventDefault();
     if (displayedFileList.length === 0) {
       setError("No File Chosen");
       return;
     }
+    // if (visibility === "private" && !password) {
+    //   setPasswordError('Private galleries must have a password')
+    //   return
+    // }
 
     // event.target.reset()
     // setUploadedFiles([])
@@ -81,7 +87,9 @@ export function GalleryCreateForm() {
     setLoadingMessage("Uploading Images...")
 
     let filesUploaded;
+
     try {
+      console.log({displayedFileList})
       const fileUploadResponse = await startUpload(displayedFileList).catch(
         (err) => {
           console.log({ err });
@@ -94,19 +102,32 @@ export function GalleryCreateForm() {
       setError("Something went wrong uploading the files")
     }
 
+
+    // let filesUploaded = true
     if (filesUploaded) {
-      console.log(visibility)
       setLoadingMessage("Creating Gallery...")
       const filesToSendToKVStore = filesUploaded.map((file, index) => {
         return {url: file.url, created_at: Date.now() + index}
       })
+      // let filesToSendToKVStore = [
+      //   {
+      //     url: "https://utfs.io/f/f0a1953e-ee22-4df0-8729-79e1d812908b-t9c4e1.jpg",
+      //     created_at: 1706533978235,
+      //   },
+      //   {
+      //     url: "https://utfs.io/f/e82cfc67-2049-4bd2-b32e-27d86f507cef-t9c4e2.jpg",
+      //     created_at: 1706533978236,
+      //   },
+      // ];
+
       const galleryId = imageId || nanoid()
       const payload = {
         galleryId,
         filesToSendToKVStore,
-        visiblity: visibility ?? 'public',
+        // visibility: visibility !== "private" ?  'public' : "private",
         password
       }
+      console.log({payload})
       try {
         const res = await fetch("api/upload-gallery", {
           method: 'POST',
@@ -114,16 +135,23 @@ export function GalleryCreateForm() {
         })
 
         const result = await res.json()
+
         console.log({result})
+        if (!result.success) {
+          throw new Error(result.error)
+        }
         event.target.reset();
         setInitialUploadSortingType([]);
         setError("");
         setWarpcastUrl(`${HOST}/gallery/${galleryId}`)
         setImageId('')
+        setPassword('')
+        // setVisibility("public")
+        // setPasswordError("")
 
       } catch (error) {
         console.log({ error })
-        //@ts-expect-error message not found
+        //@ts-expect-error message not in error
         setError(error?.message)
       }
 
@@ -133,9 +161,10 @@ export function GalleryCreateForm() {
   }
 
   useEffect(() => {
-    console.log({initialUploadSortingType})
     setDisplayedFileList(initialUploadSortingType)
-    imagesRef.current!.value = "";
+    if (initialUploadSortingType.length == 0) {
+      imagesRef.current!.value = ""
+    }
     setSortingMethod('default')
     setSortingType('asc')
   }, [initialUploadSortingType])
@@ -153,11 +182,9 @@ export function GalleryCreateForm() {
           finalDisplayedData = [...initialUploadSortingType].sort((a, b) => a.name.localeCompare(b.name))
           break
           case "size":
-            console.log("Size sorting type")
             finalDisplayedData = [...initialUploadSortingType].sort((a, b) => a.size - b.size)
         break
     }
-    console.log({finalDisplayedData})
     if (sortingMethod === "desc") {
       finalDisplayedData = [...finalDisplayedData].reverse()
     }
@@ -168,8 +195,21 @@ export function GalleryCreateForm() {
     setDisplayedFileList([...displayedFileList].reverse())
   }, [sortingMethod])
 
+
+  function formatFileSize(_size: number) {
+     var fSExt = new Array("Bytes", "KB", "MB", "GB"),
+       i = 0;
+     while (_size > 900) {
+       _size /= 1024;
+       i++;
+     }
+    var exactSize = Math.round(_size * 100) / 100 + " " + fSExt[i];
+    return exactSize
+  }
+
   return (
     <>
+      {error && <p className="bg-red-300 px-4 py-2 rounded-lg w-[70%] mx-auto text">{error}</p>}
       <div className="mx-8 w-full">
         <form className="relative my-8 space-y-4" onSubmit={handleSubmit}>
           <input
@@ -183,22 +223,20 @@ export function GalleryCreateForm() {
             }}
           />
           <div>
-
-
-          <select
-            onChange={(e) => {
-              setVisibility(e.target.value);
-            }}
-            name=""
-            id=""
-            value={visibility}
-            className="pl-3 pr-28 py-3 mt-1 text-lg block w-full border border-gray-200 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300"
-          >
-            <option value="public">Public</option>
-            <option value="private">Private</option>
+            {/* <select
+              onChange={(e) => {
+                setVisibility(e.target.value);
+              }}
+              name=""
+              id=""
+              value={visibility}
+              className="pl-3 pr-28 py-3 mt-1 text-lg block w-full border border-gray-200 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300"
+            >
+              <option value="public">Public</option>
+              <option value="private">Private</option>
             </select>
-            {visibility === "private" &&
-            <details className="text-start pl-3 pr-28 mt-1">
+            {visibility === "private" && ( */}
+              {/* <details className="text-start pl-3 pr-28 mt-1">
                 <summary>What are private galleries?</summary>
                 <ul>
                   <li>
@@ -207,12 +245,15 @@ export function GalleryCreateForm() {
                   </li>
                   <li>
                     2. They cannot be updated without knowing the initial
-                    creation password (leave blank if you don't want to password it but still make it private)
+                    creation password (leave blank if you don't want to password
+                    it but still make it private)
                   </li>
                 </ul>
-              </details> }
-            </div>
-          {visibility === "private" && (
+              </details>
+            ) */}
+            {/* } */}
+          </div>
+
             <div>
               <input
                 name="password"
@@ -224,9 +265,9 @@ export function GalleryCreateForm() {
                   setPassword(e.target.value);
                 }}
               />
-
+              {/* <small className="text-red-400">{passwordError}</small> */}
             </div>
-          )}
+
 
           <input
             ref={imagesRef}
@@ -240,10 +281,10 @@ export function GalleryCreateForm() {
           />
           <div className="filenames">
             {displayedFileList.map((file, index) => {
-              return <li key={`file-${index}`}>{file.name}</li>;
+              return <li key={`file-${index}`}>{file.name}: {formatFileSize(file.size)}</li>;
             })}
           </div>
-          <small className="text-red-400">{error}</small>
+          {/* <small className="text-red-400">{error}</small> */}
           <div className="flex items-center py-3  px-4 mt-1 text-lg w-full border border-gray-200 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300 gap-2">
             <span className="w-full text-start">Sort By: </span>
             <select
@@ -255,7 +296,7 @@ export function GalleryCreateForm() {
               value={sortingType}
               className="w-full border-2  rounded-md border-gray-400 focus:border-gray-800 cursor-pointer"
             >
-              <option value="default" >System Default</option>
+              <option value="default">System Default</option>
               <option value="name">Name</option>
               <option value="date">Date (Modified)</option>
               <option value="size">Size</option>
