@@ -6,8 +6,6 @@ import Link from 'next/link';
 export default async function Page() {
   const SEVEN_DAYS_IN_MS = 1000 * 60 * 60 * 24 * 7;
   const ENVI = process.env.ENVI ?? 'devv'
-  console.log(ENVI)
-  console.log("From page tsx")
     let galleryIds = await kv.zrange(
       `gallery_by_date:${ENVI}`,
       Date.now(),
