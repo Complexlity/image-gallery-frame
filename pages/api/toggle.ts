@@ -4,7 +4,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 
 
-const HUB_URL = process.env['HUB_URL'] || "nemes.farcaster.xyz:2281"
+const HUB_URL = process.env['HUB_URL'] || "nemes.farcaster.xyz:2283"
 const client = getSSLHubRpcClient(HUB_URL);
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
