@@ -10,7 +10,9 @@ export default async function Page() {
       Date.now(),
       Date.now() - SEVEN_DAYS_IN_MS,
       { byScore: true, rev: true }
-    );
+  );
+
+  console.log({galleryIds})
 
 	return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
