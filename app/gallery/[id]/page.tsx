@@ -6,21 +6,20 @@ type Props = {
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
-async function getImageData(id: string, itemNumber = 0, sort = "asc") {
-  let values = (await kv.hgetall(id)) as Record<string, unknown>;
-  let returnedItem;
-  if (sort === "desc") {
-    returnedItem = Object.values(values).reverse()[+itemNumber] as {
+const ENVI = process.env.ENVI ?? 'devv'
+
+async function getImageData(id: string, itemNumber = 0,) {
+  let values = (await kv.hgetall(`${id}:${ENVI}`)) as Record<string, unknown>;
+  console.log({values})
+  let returnedItems = values.files;
+  console.log({ returnedItems: returnedItems })
+  //@ts-expect-error
+    let returnedItem = returnedItems[+itemNumber] as {
       url: string;
       created_at: number;
     };
-  } else {
-    returnedItem = Object.values(values)[+itemNumber] as {
-      url: string;
-      created_at: number;
-    };
-  }
-  return { image: returnedItem.url, next: itemNumber + 1, sort };
+
+  return { image: returnedItem.url, next: itemNumber + 1, };
 }
 
 export async function generateMetadata(

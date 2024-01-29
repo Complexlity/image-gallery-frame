@@ -70,8 +70,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 
             let values = await kv.hgetall(id) as Record<string, unknown>
-            // console.log({values})
-            let returnedItems = Object.values(values)
+
+            console.log({ values })
+            let returnedItems = values.files
             // console.log({returnedItems})
             let sortedValues = returnedItems;
             // if (sort == "desc") {
@@ -83,6 +84,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             //     sortedValues = returnedItems
             // }
             // console.log({sortedValues})
+            // @ts-expect-error
             const sortedValuesLength = sortedValues.length;
 
 
@@ -115,6 +117,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             console.log({ curr });
             console.log({ next });
 
+            // @ts-expect-error
             let currentItem = sortedValues[curr] as {
                 url: string;
                 created_at: number;
