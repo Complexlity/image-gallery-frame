@@ -3,6 +3,7 @@ import { kv } from "@vercel/kv";
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 
+const ENVI = process.env.ENVI ?? 'devv'
 
 // const HUB_URL = process.env['HUB_URL'] || "nemes.farcaster.xyz:2283"
 // const client = getSSLHubRpcClient(HUB_URL);
@@ -69,7 +70,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             let next;
 
 
-            let values = await kv.hgetall(id) as Record<string, unknown>
+            let values = await kv.hgetall(`${id}:${ENVI}`) as Record<string, unknown>
 
             console.log({ values })
             let returnedItems = values.files
