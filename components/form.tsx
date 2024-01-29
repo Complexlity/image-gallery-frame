@@ -209,7 +209,11 @@ export function GalleryCreateForm() {
 
   return (
     <>
-      {error && <p className="bg-red-300 px-4 py-2 rounded-lg w-[70%] mx-auto text">{error}</p>}
+      {error && (
+        <p className="bg-red-300 px-4 py-2 rounded-lg w-[70%] mx-auto text">
+          {error}
+        </p>
+      )}
       <div className="mx-8 w-full">
         <form className="relative my-8 space-y-4" onSubmit={handleSubmit}>
           <input
@@ -222,6 +226,20 @@ export function GalleryCreateForm() {
               setImageId(e.target.value);
             }}
           />
+          <details className="text-start pl-3 pr-28 mt-1">
+            <summary className="text-gray-600">When to put an id?</summary>
+            <ul>
+              <li>
+                1. If you want to have something personalized like
+                "complexlity", "itai"
+              </li>
+              <li>
+                2. It can be risky if you use common words (someone may have
+                already picked it)
+              </li>
+            </ul>
+          </details>
+
           <div>
             {/* <select
               onChange={(e) => {
@@ -236,7 +254,7 @@ export function GalleryCreateForm() {
               <option value="private">Private</option>
             </select>
             {visibility === "private" && ( */}
-              {/* <details className="text-start pl-3 pr-28 mt-1">
+            {/* <details className="text-start pl-3 pr-28 mt-1">
                 <summary>What are private galleries?</summary>
                 <ul>
                   <li>
@@ -254,20 +272,30 @@ export function GalleryCreateForm() {
             {/* } */}
           </div>
 
-            <div>
-              <input
-                name="password"
-                id="password"
-                placeholder="Enter a password (optional)"
-                className="pl-3 pr-28 py-3 mt-1 text-lg block w-full border border-gray-200 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300"
-                value={password}
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                }}
-              />
-              {/* <small className="text-red-400">{passwordError}</small> */}
-            </div>
-
+          <div>
+            <input
+              name="password"
+              id="password"
+              placeholder="Enter a password (optional)"
+              className="pl-3 pr-28 py-3 mt-1 text-lg block w-full border border-gray-200 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300"
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+            />
+            {/* <small className="text-red-400">{passwordError}</small> */}
+            <details className="text-start pl-3 pr-28 mt-1">
+              <summary className="text-gray-600">When to put an password?</summary>
+              <ul>
+                <li>
+                  1. If you want to prevent others from being able to update your gallery
+                </li>
+                <li>
+                  2. Use something you can remember. If you forget it, it's gone
+                </li>
+              </ul>
+            </details>
+          </div>
 
           <input
             ref={imagesRef}
@@ -281,7 +309,11 @@ export function GalleryCreateForm() {
           />
           <div className="filenames">
             {displayedFileList.map((file, index) => {
-              return <li key={`file-${index}`}>{file.name}: {formatFileSize(file.size)}</li>;
+              return (
+                <li key={`file-${index}`}>
+                  {file.name}: {formatFileSize(file.size)}
+                </li>
+              );
             })}
           </div>
           {/* <small className="text-red-400">{error}</small> */}
