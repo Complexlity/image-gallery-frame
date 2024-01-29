@@ -1,33 +1,34 @@
-// import { Message, getSSLHubRpcClient } from "@farcaster/hub-nodejs";
+import { Message, getSSLHubRpcClient } from "@farcaster/hub-nodejs";
 import { kv } from "@vercel/kv";
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 
 
-// const HUB_URL = process.env['HUB_URL'] || "nemes.farcaster.xyz:2283"
-// const client = getSSLHubRpcClient(HUB_URL);
+const HUB_URL = process.env['HUB_URL'] || "nemes.farcaster.xyz:2281"
+const client = getSSLHubRpcClient(HUB_URL);
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'POST') {
         console.log({requestBody: req.body})
         try {
 
-            // let validatedMessage: Message | undefined = undefined;
-            // let frameMessage;
-            // let result
+            let validatedMessage: Message | undefined = undefined;
+            let frameMessage;
+            let result
 
-            // try {
-            //     frameMessage = Message.decode(Buffer.from(req.body?.trustedData?.messageBytes || '', 'hex'));
-            //     console.log({frameMessage})
-            //     result = await client.validateMessage(frameMessage);
-            //     console.log({result})
-            //     if (result.isOk() && result.value.valid) {
+            try {
+                frameMessage = Message.decode(Buffer.from(req.body?.trustedData?.messageBytes || '', 'hex'));
+                console.log({frameMessage})
+                result = await client.validateMessage(frameMessage);
+                console.log({result})
+                if (result.isOk() && result.value.valid) {
 
-            //         validatedMessage = result.value.message;
-            //     }
-            // } catch (e)  {
-            //     return res.status(400).send(`Failed to validate message: ${e}`);
-            // }
+                    validatedMessage = result.value.message;
+                }
+            } catch (e) {
+                console.log({e})
+                // return res.status(400).send(`Failed to validate message: ${e}`);
+            }
 
             // console.log({ frameMessage })
             // console.log({result})
