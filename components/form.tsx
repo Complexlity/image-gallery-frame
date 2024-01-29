@@ -284,7 +284,7 @@ export function GalleryCreateForm() {
             />
             {/* <small className="text-red-400">{passwordError}</small> */}
             <details className="text-start pl-3 pr-28 mt-1">
-              <summary className="text-gray-600">When to put an password?</summary>
+              <summary className="text-gray-600">When to put a password?</summary>
               <ul>
                 <li>
                   1. If you want to prevent others from being able to update your gallery
