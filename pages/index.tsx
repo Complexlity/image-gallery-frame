@@ -7,6 +7,7 @@ import Link from "next/link";
 const Home = () => {
   return (
     <>
+      
       <Head>
         <title>Farcaster Frames Gallery</title>
         <meta
