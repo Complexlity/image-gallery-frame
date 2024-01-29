@@ -1,16 +1,14 @@
 "use client";
 
 import clsx from "clsx";
+import { customAlphabet } from "nanoid";
+import { useRouter } from "next/navigation";
 import {
   useEffect,
   useRef,
-  useState,
-  useTransition
+  useState
 } from "react";
-import { v4 as uuidv4 } from "uuid";
 import { useUploadThing } from "../utils/uploadthing";
-import { customAlphabet } from "nanoid";
-import { useRouter } from "next/navigation";
 
 const HOST = process.env.NEXT_PUBLIC_HOST
 
