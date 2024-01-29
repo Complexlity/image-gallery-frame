@@ -35,12 +35,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             //     buttonIndex || 2;
             // console.log({validatedMessage})
             let buttonId = req.body.untrustedData.buttonIndex || 2
-            console.log({buttonId})
-            let idSortNext = req.query.id as unknown as string
-            let id = idSortNext.slice(0, idSortNext.length - 2)
-            let queryySort = parseInt(idSortNext[idSortNext.length - 2])
+            console.log({ buttonId })
+            let idNext = req.query.id as unknown as string
+            let id = idNext.slice(0, idNext.length - 1)
+            // let queryySort = parseInt(idSortNext[idSortNext.length - 2])
             // console.log({queryySort})
-            let querySort = queryySort == 0 ? "desc" : "asc"
+            // let querySort = queryySort == 0 ? "desc" : "asc"
 
 
             // let buttonId = req.body.buttonId || 2
@@ -48,24 +48,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             // console.log({buttonId})
             // const querySort = req.query.sort
             // console.log({querySort})
-            let sort
-            switch (buttonId) {
-                case 1:
-                case 2:
-                    sort = querySort
-                    break
-                case 3:
-                    sort = "asc"
-                    break
-                case 4:
-                    sort = "desc"
-                    break
-                default:
-                    sort = 'asc'
-            }
+            // let sort
+            // switch (buttonId) {
+            //     case 1:
+            //     case 2:
+            //         sort = querySort
+            //         break
+            //     case 3:
+            //         sort = "asc"
+            //         break
+            //     case 4:
+            //         sort = "desc"
+            //         break
+            //     default:
+            //         sort = 'asc'
+            // }
 
             // console.log({sort})
-            let curr = Number(idSortNext[idSortNext.length - 1])
+            let curr = Number(idNext[idNext.length - 1])
             let next;
 
 
@@ -73,15 +73,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             // console.log({values})
             let returnedItems = Object.values(values)
             // console.log({returnedItems})
-            let sortedValues;
-            if (sort == "desc") {
-                // console.log("I am in desc")
-                sortedValues = [...returnedItems].reverse()
-            }
-            else {
-                // console.log("I am in asc")
-                sortedValues = returnedItems
-            }
+            let sortedValues = returnedItems;
+            // if (sort == "desc") {
+            //     // console.log("I am in desc")
+            //     sortedValues = [...returnedItems].reverse()
+            // }
+            // else {
+            //     // console.log("I am in asc")
+            //     sortedValues = returnedItems
+            // }
             // console.log({sortedValues})
             const sortedValuesLength = sortedValues.length;
 
@@ -91,13 +91,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 if (curr == sortedValuesLength) {
                     curr = 0
                 }
-                    next = curr + 1
+                next = curr + 1
             }
 
             else if (buttonId == 1) {
                 // console.log("I am in Prev")
                 if (curr == 1) {
-                    curr = sortedValuesLength -1
+                    curr = sortedValuesLength - 1
                     next = sortedValuesLength
                 }
                 else {
@@ -105,24 +105,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     curr = curr - 2
                 }
             }
-            else if (buttonId === 3 || buttonId === 4) {
-                curr = 0
-                next = 1
-                // next = curr
-                // curr = curr - 1
+            else if (buttonId === 3) {
+                // curr =
+                // next = 1
+                next = curr
+                curr = curr - 1
             }
 
             console.log({ curr });
             console.log({ next });
 
             let currentItem = sortedValues[curr] as {
-              url: string;
-              created_at: number;
+                url: string;
+                created_at: number;
             };
             // console.log({currentItem})
 
-let finalSort = sort === "desc" ? 0 : 1
+            // let finalSort = sort === "desc" ? 0 : 1
 
+            let showReadMore = curr === sortedValuesLength - 1
 
             // Return an HTML response
             res.setHeader('Content-Type', 'text/html');
@@ -135,11 +136,11 @@ let finalSort = sort === "desc" ? 0 : 1
           <meta property="og:image" content="${currentItem.url}">
           <meta name="fc:frame" content="vNext">
           <meta name="fc:frame:image" content="${currentItem.url}">
-          <meta name="fc:frame:post_url" content="${process.env['HOST']}/api/toggle?id=${id}${finalSort}${next}">
+          <meta name="fc:frame:post_url" content="${process.env['HOST']}/api/toggle?id=${id}${next}">
           <meta name="fc:frame:button:1" content="Prev">
           <meta name="fc:frame:button:2" content="Next">
-          <meta name="fc:frame:button:3" content="Old->New">
-          <meta name="fc:frame:button:4" content="New->Old">
+          ${showReadMore ? `<meta name= "fc:frame:button:3" content = "Read More" >` : ""}
+
         </head>
         <body>
 
