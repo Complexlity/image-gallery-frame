@@ -13,8 +13,10 @@ const ENVI = process.env.ENVI ?? 'devv'
 
 async function getImageData(id: string, itemNumber = 0,) {
   let values = (await kv.hgetall(`${id}:${ENVI}`)) as Record<string, unknown>;
-  console.log({values})
-  let returnedItems = values.files;
+  console.log({ values })
+  let returnedItems
+  if(!values) returnedItems = []
+  else returnedItems = values.files;
   console.log({ returnedItems: returnedItems })
   //@ts-expect-error
     let returnedItem = returnedItems[+itemNumber] as {

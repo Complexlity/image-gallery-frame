@@ -73,7 +73,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             let values = await kv.hgetall(`${id}:${ENVI}`) as Record<string, unknown>
 
             console.log({ values })
-            let returnedItems = values.files
+            let returnedItems
+            if(!values) returnedItems = []
+            else returnedItems = values.files
             // console.log({returnedItems})
             let sortedValues = returnedItems;
             // if (sort == "desc") {
