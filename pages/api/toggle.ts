@@ -4,6 +4,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 
 const ENVI = process.env.ENVI ?? 'devv'
+const READ_MORE_LINK = null
 
 // const HUB_URL = process.env['HUB_URL'] || "nemes.farcaster.xyz:2283"
 // const client = getSSLHubRpcClient(HUB_URL);
@@ -130,7 +131,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             // let finalSort = sort === "desc" ? 0 : 1
 
             let showReadMore = curr === sortedValuesLength - 1
-
+            if(!READ_MORE_LINK) showReadMore = false
             // Return an HTML response
             res.setHeader('Content-Type', 'text/html');
             res.status(200).send(`
