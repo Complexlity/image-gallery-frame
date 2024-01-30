@@ -96,7 +96,7 @@ export function GalleryCreateForm() {
         }
       );
       filesUploaded = fileUploadResponse
-
+        console.log({filesUploaded})
     } catch (error) {
       console.log({error})
       setError("Something went wrong uploading the files")
