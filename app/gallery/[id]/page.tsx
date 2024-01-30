@@ -24,7 +24,7 @@ async function getImageData(id: string, itemNumber = 0,) {
       created_at: number;
     };
 
-  return { image: returnedItem.url, next: itemNumber + 1, };
+  return { image: returnedItem?.url ?? "", next: itemNumber + 1, };
 }
 
 export async function generateMetadata(
