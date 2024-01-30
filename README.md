@@ -7,6 +7,6 @@ This example creates an gallery application on farcaster with some interactive b
 
 ## Demo
 
-- [https://image-gallery-frame.vercel.app/](https://image-gallery-frrame.vercel.app/)
+- [https://frames-gallery.vercel.app/](https://frames-gallery.vercel.app/)
 
 
