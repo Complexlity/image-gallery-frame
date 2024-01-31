@@ -3,7 +3,7 @@ import { kv } from "@vercel/kv";
 import { customAlphabet } from "nanoid";
 
 
-const ENVI = process.env.ENVI_KEY ?? "devv"
+const ENVI = process.env.ENVI ?? "devv"
 
 type PostBody = {
 	galleryId: string,
@@ -93,7 +93,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 					password: parsedValues.password
 				})
 				const zddId = `gallery_by_date:${ENVI}`
-				console.log(zddId)
+				console.log({zddId})
 				await kv.zadd(zddId, {
 					score: Number(parsedValues.filesToSendToKVStore[0].created_at),
 					member: parsedValues.galleryId,
