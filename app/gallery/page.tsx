@@ -3,6 +3,8 @@ import Link from 'next/link';
 
 
 
+export const dynamic = 'force-dynamic'
+
 export default async function Page() {
   const SEVEN_DAYS_IN_MS = 1000 * 60 * 60 * 24 * 7;
   const ENVI = process.env.ENVI ?? 'devv'
@@ -13,7 +15,7 @@ export default async function Page() {
       { byScore: true, rev: true }
   );
 
-  console.log({galleryIds})
+  console.log({galleryIds, length: galleryIds.length})
 
 	return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
