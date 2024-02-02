@@ -98,6 +98,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 					score: Number(parsedValues.filesToSendToKVStore[0].created_at),
 					member: parsedValues.galleryId,
 				});
+				await kv.incr(`${zddId}:score`)
 			}
 
 		} catch (error) {
