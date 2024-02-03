@@ -77,7 +77,8 @@ export default async function handler(
 
 			let nextInput
 			if (buttonId == 2 || buttonId == 3) {
-				nextInput = input + getNextInput(currentPage, buttonId) ?? ''
+				const temp = getNextInput(currentPage, buttonId)
+				nextInput = input.length == 0 ?  temp : input + temp 
 			}
 			else if (buttonId == 1) {
 				nextInput = input ?? ''
