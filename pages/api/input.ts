@@ -14,7 +14,7 @@ const mapping = {
    "x" : "x",
 };
 
-function getNextInput(page: number, buttonId: number) {
+function getNextInput(page: number, buttonId: 2 | 3) {
 	let nextInput = ''
 	if (page == 2) {
 		nextInput = buttonId == 2 ? 'u' : 'd'
@@ -78,7 +78,7 @@ export default async function handler(
 			let nextInput
 			if (buttonId == 2 || buttonId == 3) {
 				const temp = getNextInput(currentPage, buttonId)
-				nextInput = input.length == 0 ?  temp : input + temp 
+				nextInput = input.length == 0 ?  temp : input + temp
 			}
 			else if (buttonId == 1) {
 				nextInput = input ?? ''
