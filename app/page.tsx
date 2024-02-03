@@ -1,16 +1,48 @@
-import { type NextPage } from "next";
+import { ResolvingMetadata, type NextPage, Metadata } from "next";
 import Head from "next/head";
 
 import { GalleryCreateForm } from "../components/form";
 import Link from "next/link";
 import { kv } from "@vercel/kv";
 
-const ENVI = process.env.ENVI ?? 'devv'
+const ENVI = process.env.ENVI ?? "devv";
+
+type Props = {
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+};
 
 
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  // read route params
+  const id = params.id;
+
+  const fcMetadata: Record<string, string> = {
+    "fc:frame": "vNext",
+    "fc:frame:post_url": `${process.env["HOST"]}/api/toggle?id=${id}1`,
+    // "fc:frame:image": `${imageUrl}`,
+    "fc:frame:button:1": "Prev",
+    "fc:frame:button:2": "Next",
+  };
+
+  return {
+    title: id,
+    openGraph: {
+      title: id,
+      // images: [`${}`],
+    },
+    other: {
+      ...fcMetadata,
+    },
+    metadataBase: new URL(process.env["HOST"] || ""),
+  };
+}
 
 
-const Home = ({totalGalleriesCreated}: {totalGalleriesCreated: number}) => {
+const Home = () => {
   return (
     <>
       <Head>
@@ -33,7 +65,6 @@ const Home = ({totalGalleriesCreated}: {totalGalleriesCreated: number}) => {
           <div className="flex flex-wrap items-center justify-around max-w-4xl my-8 sm:w-full bg-white rounded-md shadow-xl h-full border border-gray-100">
             <GalleryCreateForm />
           </div>
-          
         </main>
       </div>
     </>
@@ -61,7 +92,4 @@ function VercelLogo(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-
 export default Home;
-
-
