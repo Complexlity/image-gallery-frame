@@ -1,9 +1,7 @@
-import { ResolvingMetadata, type NextPage, Metadata } from "next";
+import { Metadata, ResolvingMetadata } from "next";
 import Head from "next/head";
 
 import { GalleryCreateForm } from "../components/form";
-import Link from "next/link";
-import { kv } from "@vercel/kv";
 
 const ENVI = process.env.ENVI ?? "devv";
 
