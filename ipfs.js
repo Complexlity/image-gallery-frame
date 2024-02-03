@@ -4,6 +4,7 @@ const fs = require("fs");
 const JWT =
   "";
 
+  
 const pinFileToIPFS = async () => {
   const formData = new FormData();
   const src = "path/to/file.png";
