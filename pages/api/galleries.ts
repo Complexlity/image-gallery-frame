@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 const SEVEN_DAYS_IN_MS = 1000 * 60 * 60 * 24 * 7;
 
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	let galleryIds = await kv.zrange(
     "gallery_by_date",
