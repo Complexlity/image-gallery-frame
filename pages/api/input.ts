@@ -60,7 +60,7 @@ export default async function handler(
 				console.log({ ipfsCID });
 
         if (ipfsCID) {
-          finalImageUrl = process.env["HOST"] + "/ipfs/" + ipfsCID;
+          finalImageUrl = process.env.PINATA_GATEWAY + "/ipfs/" + ipfsCID;
         }
 				else {
 					finalImageUrl = `${process.env['HOST']}/finalImage?input=${input}`
