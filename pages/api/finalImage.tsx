@@ -16,7 +16,7 @@ export default async function handler(
 ) {
 
 
-  if (req.method === "POST") {
+
 
     try {
 
@@ -74,9 +74,5 @@ export default async function handler(
       console.error(error);
       res.status(500).send("Error generating image");
     }
-  } else {
-    // Handle any non-POST requests
-    res.setHeader("Allow", ["POST"]);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
-  }
+  
 }
