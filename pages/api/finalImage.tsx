@@ -1,8 +1,11 @@
 // import { Message, getSSLHubRpcClient } from "@farcaster/hub-nodejs";
+import * as fs from "fs";
 import { kv } from "@vercel/kv";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { join } from "path";
 import satori from "satori";
 import sharp from "sharp";
+
 
 const fontPath = join(process.cwd(), "Roboto-Regular.ttf");
 let fontData = fs.readFileSync(fontPath);
