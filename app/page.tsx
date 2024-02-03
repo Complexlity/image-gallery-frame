@@ -31,6 +31,7 @@ export async function generateMetadata(
 
   return {
     title: "Lock Your Images",
+    description: "Password Your Images With Play station keys",
     openGraph: {
       title: "Lock Your Images",
       images: [imageUrl],
