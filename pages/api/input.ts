@@ -147,8 +147,11 @@ return  res.status(200).send(`
 					`
 				}
 
-			if (buttonId == 1) {
+			if (buttonId == 4) {
 				nextInput = ""
+			}
+			if (buttonId == 1) {
+				nextInput = input
 			}
 
 const imageUrl = `${process.env['HOST']}/api/image?input=${nextInput}`
