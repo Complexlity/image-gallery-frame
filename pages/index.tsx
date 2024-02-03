@@ -8,16 +8,13 @@ import { kv } from "@vercel/kv";
 const ENVI = process.env.ENVI ?? 'devv'
 
 
-export async function getServerSideProps(){
-  const totalGalleriesCreated = await kv.get(`gallery_by_date:${ENVI}:score`)
-  return {props: {totalGalleriesCreated}}
-}
+
 
 const Home = ({totalGalleriesCreated}: {totalGalleriesCreated: number}) => {
   return (
     <>
       <Head>
-        <title>Farcaster Frames Gallery</title>
+        <title>Password Image In Frame</title>
         <meta
           name="description"
           content="A place to show images/gifs on farcaster frames"
@@ -30,22 +27,13 @@ const Home = ({totalGalleriesCreated}: {totalGalleriesCreated: number}) => {
             <VercelLogo className="h-8  invert p-3 mb-1" />
           </div>
           <h1 className="text-lg sm:text-2xl font-bold mb-2">
-            Farcaster Gallery
+            Password Your Images In Frame
           </h1>
-          <p className="text-xl my-2 font-bold">
-            Total Galleries Created: <span className="font-normal">{totalGalleriesCreated}</span>
-          </p>
-          <h2 className="text-md sm:text-xl mx-4">
-            Upload Images To Your Gallery. Max per time (5)
-          </h2>
+
           <div className="flex flex-wrap items-center justify-around max-w-4xl my-8 sm:w-full bg-white rounded-md shadow-xl h-full border border-gray-100">
             <GalleryCreateForm />
           </div>
-          <Link href="/gallery">
-            <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-              All Galleries
-            </button>
-          </Link>
+          
         </main>
       </div>
     </>
