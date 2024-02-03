@@ -16,7 +16,6 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   // read route params
-  const id = params.id;
   const imageUrl = `${process.env['HOST']}/api/image?input=`
   const postUrl = `${process.env["HOST"]}/api/input?page=2&input=""`
 
@@ -31,9 +30,9 @@ export async function generateMetadata(
   };
 
   return {
-    title: id,
+    title: "Lock Your Images",
     openGraph: {
-      title: id,
+      title: "Lock Your Images",
       images: [imageUrl],
     },
     other: {
@@ -47,14 +46,6 @@ export async function generateMetadata(
 const Home = () => {
   return (
     <>
-      <Head>
-        <title>Password Image In Frame</title>
-        <meta
-          name="description"
-          content="A place to show images/gifs on farcaster frames"
-        />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
       <div className="flex flex-col items-center justify-center min-h-screen py-2">
         <main className="flex flex-col items-center justify-center flex-1 px-4 sm:px-20 text-center">
           <div className="flex justify-center items-center bg-black rounded-full w-12 h-12  my-8">
