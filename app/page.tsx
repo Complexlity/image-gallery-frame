@@ -24,7 +24,7 @@ export async function generateMetadata(
 
   const fcMetadata: Record<string, string> = {
     "fc:frame": "vNext",
-    "fc:frame:post_url": postUrl ,
+    "fc:frame:post_url": `${postUrl}` ,
     "fc:frame:image": `${imageUrl}`,
     "fc:frame:button:1": "->",
     "fc:frame:button:2": "Up",

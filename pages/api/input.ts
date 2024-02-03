@@ -3,6 +3,16 @@ import { kv } from "@vercel/kv";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 const buttons = ['up', 'down', 'left', 'right', 'square', 'circle', 'triangle', 'x']
+const mapping = {
+  u: "up",
+  d: "down",
+  l: "left",
+  r: "right",
+  s: "square",
+  c: "circle",
+  t: "triangle",
+  x: "x",
+};
 function getUsedButtons(page: number) {
 	let usedButtons;
 				switch (page) {
@@ -36,17 +46,41 @@ export default async function handler(
 			let buttonId = req.body.untrustedData.buttonIndex || 2;
 			let currentPage = req.query.page as unknown as number
 			let nextPage = +currentPage + 1
+			let input = req.query.input as unknown as string
 
-			if (currentPage > 5) {
-				currentPage = 1
-				nextPage = 2
-			}
+
 
 			let buttonsTemplate = ''
 
 			if (currentPage > 5 && buttonId == 2) {
 				//End of page. Fetch result
+				const imageUrl = `${process.env['HOST']}/finalImage?input=${input}`
+				const postUrl = `${process.env["HOST"]}/api/input?page=2`;
+
+				res.setHeader("Content-Type", "text/html");
+return  res.status(200).send(`
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title></title>
+          <meta property="og:title" content="Final Image">
+          <meta property="og:image" content="${imageUrl}">
+          <meta name="fc:frame" content="vNext">
+          <meta name="fc:frame:image" content="${imageUrl}">
+          <meta name="fc:frame:post_url" content="${postUrl}"
+					<meta name="fc:frame:button:1" content="Fetch Again" />
+        </head>
+        <body>
+
+        </body>
+      </html>
+    `);
 			}
+
+			if (currentPage > 5) {
+        currentPage = 1;
+        nextPage = 2;
+      }
 			const usedButtons = getUsedButtons(+currentPage) ?? []
 
 			console.log(usedButtons)
