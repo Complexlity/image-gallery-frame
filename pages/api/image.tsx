@@ -51,13 +51,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               }}
             >
               <h1>Combination</h1>
-            <div style={{ display: "flex" }}>
-              {inputAsArray.map(
-                (item) =>
-                  //@ts-expect-error
-                  `${mapping[item]},`
-              )}
-            </div>
+              {input && input != "" &&
+                (<div style={{ display: "flex" }}>
+                  {inputAsArray.map(
+                    (item) =>
+                      //@ts-expect-error
+                      `${mapping[item]},`
+                  )}
+                </div>
+                )}
             </div>
           </div>,
           {
