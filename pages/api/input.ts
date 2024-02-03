@@ -19,15 +19,15 @@ function getNextInput(page: number, buttonId: number) {
 	if (page == 2) {
 		nextInput = buttonId == 2 ? 'u' : 'd'
 	}
-	if (page == 3) {
+	else if (page == 3) {
 		nextInput = buttonId == 2 ? 'l' : 'r'
 
 	}
-	if (page == 4) {
+	else if (page == 4) {
 		nextInput = buttonId == 2 ? 's' : 'c'
 
 	}
-	if (page == 5) {
+	else if (page == 5) {
 		nextInput = buttonId == 2 ? 't' : 'x'
 	}
 
@@ -72,8 +72,18 @@ export default async function handler(
 
 
 			let input = req.query.input as unknown as string
-			console.log({input})
-			let nextInput = input + getNextInput(currentPage, buttonId)
+			console.log({ input })
+			console.log({buttonId})
+			let nextInput
+			if (buttonId == 2 || buttonId == 3) {
+				nextInput = input + getNextInput(currentPage, buttonId)
+			}
+			else if (buttonId == 1) {
+				nextInput = input
+			}
+			else {
+				nextInput = ''
+			}
 			console.log({nextInput})
 			console.log({nextInput})
 
@@ -157,7 +167,7 @@ return  res.status(200).send(`
 			}
 
 
-			
+
 const imageUrl = `${process.env['HOST']}/api/image?input=${nextInput}`
 const postUrl = `${process.env["HOST"]}/api/input?page=${nextPage}&input=${nextInput}`;
 
