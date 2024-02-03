@@ -30,6 +30,7 @@ function getNextInput(page: number, buttonId: number) {
 	if (page == 5) {
 		nextInput = buttonId == 2 ? 't' : 'x'
 	}
+	
 	return nextInput;
 }
 
@@ -138,7 +139,14 @@ return  res.status(200).send(`
 					`
 				}
 
+			if (buttonId == 4) {
+				nextInput = ""
+				nextPage = currentPage
+}
 
+
+const imageUrl = `${process.env['HOST']}/api/image?input=${nextInput}`
+const postUrl = `${process.env["HOST"]}/api/input?page=${nextPage}&input=${nextInput}`;
 
 
 
@@ -151,9 +159,8 @@ return  res.status(200).send(`
           <meta property="og:title" content="">
           <meta property="og:image" content="$">
           <meta name="fc:frame" content="vNext">
-          <meta name="fc:frame:image" content="">
-          <meta name="fc:frame:post_url" content="${process.env["HOST"]
-					}/api/input?page=${nextPage}&input=${nextInput}">
+          <meta name="fc:frame:image" content=${imageUrl}>
+          <meta name="fc:frame:post_url" content="${postUrl}">
 					${buttonsTemplate}
         </head>
         <body>
