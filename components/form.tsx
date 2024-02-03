@@ -41,7 +41,7 @@ export function GalleryCreateForm() {
   const [loadingMessage, setLoadingMessage] = useState('')
 
   // const [visibility, setVisibility] = useState('public')
-  const [password, setPassword] = useState('')
+  const [password, setPassword] = useState<string[]>([])
 
 
   const { startUpload } = useUploadThing("imageUploader", {
@@ -67,6 +67,8 @@ export function GalleryCreateForm() {
      const formData = new FormData();
      formData.append("file", file);
      formData.append("name", fileName ?? file.name)
+
+
     //  const myPromise = new Promise((resolve) => {
     //    setTimeout(() => {
     //      console.log("resolved promise")
@@ -100,7 +102,7 @@ export function GalleryCreateForm() {
   };
 
   function handleButtonClick(text: string){
-    console.log("clicked")
+    setPassword([...password, text])
     return
   }
 
@@ -138,16 +140,16 @@ export function GalleryCreateForm() {
             onChange={handleChange}
           />
           <div>
-            <input
-              ref={passwordRef}
-              name="password"
-              id="password"
-              placeholder="Click the buttons to set password combination"
-              className="pl-3 pr-28 py-3 mt-1 text-lg block w-full border border-gray-400 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300"
-              disabled
-            />
+            <div className=" py-3 px-4 mt-1 text-lg block w-full border border-gray-400 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300 text-start">
+              {password.length > 0 ? (
+                <PasswordButtons password={password} />
+              ) : (
+                "Click buttons to set combination"
+              )}
+            </div>
             <div className="flex gap-2 py-4">
               <button
+                type="button"
                 className="bg-gray-300 rounded-md p-2 hover:bg-blue-400"
                 onClick={() => handleButtonClick("up")}
               >
@@ -155,57 +157,65 @@ export function GalleryCreateForm() {
                 <ArrowBigUp className="text-purple-800" />
               </button>
               <button
+                type="button"
                 className="bg-gray-300 rounded-md p-2 hover:bg-blue-400"
                 onClick={() => handleButtonClick("down")}
               >
                 {/* Add your down icon here */}
-                <ArrowBigDown  className="text-purple-800"/>
+                <ArrowBigDown className="text-purple-800" />
               </button>
               <button
+                type="button"
                 className="bg-gray-300 rounded-md p-2 hover:bg-blue-400"
-                onClick={() => handleButtonClick("down")}
+                onClick={() => handleButtonClick("left")}
               >
                 {/* Add your down icon here */}
-                <ArrowBigLeft  className="text-purple-800"/>
+                <ArrowBigLeft className="text-purple-800" />
               </button>
               <button
+                type="button"
                 className="bg-gray-300 rounded-md p-2 hover:bg-blue-400"
-                onClick={() => handleButtonClick("down")}
+                onClick={() => handleButtonClick("right")}
               >
                 {/* Add your down icon here */}
                 <ArrowBigRight className="text-purple-800" />
               </button>
               <button
+                type="button"
                 className="bg-gray-300 rounded-md p-2 hover:bg-blue-400"
-                onClick={() => handleButtonClick("down")}
+                onClick={() => handleButtonClick("square")}
               >
                 {/* Add your down icon here */}
                 <Square className="text-green-600" />
               </button>
               <button
+                type="button"
                 className="bg-gray-300 rounded-md p-2 hover:bg-blue-400"
-                onClick={() => handleButtonClick("down")}
+                onClick={() => handleButtonClick("circle")}
               >
                 {/* Add your down icon here */}
                 <Circle className="text-sky-700" />
               </button>
               <button
+                type="button"
                 className="bg-gray-300 rounded-md p-2 hover:bg-blue-400"
-                onClick={() => handleButtonClick("down")}
+                onClick={() => handleButtonClick("triangle")}
               >
                 {/* Add your down icon here */}
                 <Triangle className="text-red-600" />
               </button>
               <button
+                type="button"
                 className="bg-gray-300 rounded-md p-2 hover:bg-blue-400"
-                onClick={() => handleButtonClick("down")}
+                onClick={() => handleButtonClick("x")}
               >
                 {/* Add your down icon here */}
-                <X className='text-yellow-600' />
+                <X className="text-yellow-600" />
               </button>
               <button
+                type="button"
                 className="bg-red-600 px-4 py-2 text-white hover:bg-red-400"
-                onClick={() => handleButtonClick("down")}
+                onClick={() => setPassword([])}
               >
                 {/* Add your down icon here */}
                 Clear
@@ -231,3 +241,26 @@ export function GalleryCreateForm() {
 }
 
 
+function PasswordButtons({ password }: { password: string[] }) {
+  const mapping = {
+    up: <ArrowBigUp className="fill-purple-800 text-purple-800" />,
+    down: <ArrowBigDown className="fill-purple-800 text-purple-800" />,
+    left: <ArrowBigLeft className="fill-purple-800 text-purple-800" />,
+    right: <ArrowBigRight className="fill-purple-800 text-purple-800" />,
+    square: <Square className="fill-green-600 text-green-600" />,
+    circle: <Circle className="fill-sky-700 text-sky-700" />,
+    triangle: <Triangle className="fill-red-600 text-red-700" />,
+    x: <X className="fill-yellow-600 text-yellow-600" />,
+  };
+
+  return (
+    <div className="flex gap-1">
+      {password.map(
+        (item, index) =>
+          // Use square bracket notation to dynamically access the corresponding JSX icon
+          //@ts-expect-error
+          mapping[item]
+      )}
+    </div>
+  );
+}
