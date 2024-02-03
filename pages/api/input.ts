@@ -85,7 +85,7 @@ export default async function handler(
           finalImageUrl = process.env.PINATA_GATEWAY + "/ipfs/" + ipfsCID;
         }
 				else {
-					finalImageUrl = `${process.env['HOST']}/finalImage?input=${input}`
+					finalImageUrl = `${process.env['HOST']}/finalImage`
 				}
 				const postUrl = `${process.env["HOST"]}/api/input?page=2`;
 
