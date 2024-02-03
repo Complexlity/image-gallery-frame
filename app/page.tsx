@@ -19,11 +19,13 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   // read route params
   const id = params.id;
+  const imageUrl = `${process.env['HOST']}/api/image?input=`
+  const postUrl = `${process.env["HOST"]}/api/page=2`
 
   const fcMetadata: Record<string, string> = {
     "fc:frame": "vNext",
-    "fc:frame:post_url": `${process.env["HOST"]}/api/input?page=2`,
-    "fc:frame:image": `${process.env['HOST']}/api/image?input=""`,
+    "fc:frame:post_url": postUrl ,
+    "fc:frame:image": `${imageUrl}`,
     "fc:frame:button:1": "->",
     "fc:frame:button:2": "Up",
     "fc:frame:button:3": "Down",
@@ -34,7 +36,7 @@ export async function generateMetadata(
     title: id,
     openGraph: {
       title: id,
-      // images: [`${}`],
+      images: [imageUrl],
     },
     other: {
       ...fcMetadata,
