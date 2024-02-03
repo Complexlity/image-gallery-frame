@@ -156,6 +156,8 @@ return  res.status(200).send(`
 				nextInput = input
 			}
 
+
+			
 const imageUrl = `${process.env['HOST']}/api/image?input=${nextInput}`
 const postUrl = `${process.env["HOST"]}/api/input?page=${nextPage}&input=${nextInput}`;
 
