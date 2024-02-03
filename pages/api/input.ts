@@ -71,13 +71,13 @@ export default async function handler(
 			let nextPage = +currentPage
 
 
-			let input = req.query.input as unknown as string ?? ""
+			let input = req.query.input as unknown as string ?? ''
 			console.log({ input })
 			console.log({ buttonId })
 
 			let nextInput
 			if (buttonId == 2 || buttonId == 3) {
-				const temp = getNextInput(currentPage, buttonId)
+				const temp = getNextInput(currentPage, buttonId) ?? ''
 				nextInput = input.length == 0 ?  temp : input + temp
 			}
 			else if (buttonId == 1) {
