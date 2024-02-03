@@ -10,11 +10,23 @@ import {
   useState
 } from "react";
 import { useUploadThing } from "../utils/uploadthing";
+import { Brush } from 'lucide-react';
+import {
+  ArrowBigUp,
+  ArrowBigDown,
+  ArrowBigLeft,
+  ArrowBigRight,
+  Square,
+  Circle,
+  Triangle,
+  X
+} from "lucide-react";
+
 
 const HOST = process.env.NEXT_PUBLIC_HOST
 
 export function GalleryCreateForm() {
-
+  const passwordRef = useRef(null)
   const nanoid = customAlphabet('0123456789abcdefghijklmnopqrstuvwxyz', 7)
   const [initialUploadSortingType, setInitialUploadSortingType] = useState<File[]>([]);
   const [displayedFileList, setDisplayedFileList] = useState<File[]>([])
@@ -87,6 +99,11 @@ export function GalleryCreateForm() {
     setFile(e.target.files[0]);
   };
 
+  function handleButtonClick(text: string){
+    console.log("clicked")
+    return
+  }
+
 
   return (
     <>
@@ -96,7 +113,10 @@ export function GalleryCreateForm() {
         </p>
       )}
       <div className="mx-8 w-full">
-        <form className="relative my-8 space-y-4 flex flex-col" onSubmit={handleSubmit}>
+        <form
+          className="relative my-8 space-y-4 flex flex-col"
+          onSubmit={handleSubmit}
+        >
           <input
             name="filename"
             id="filename"
@@ -117,6 +137,82 @@ export function GalleryCreateForm() {
             className="pl-3 pr-28 py-3 mt-1 text-lg block w-full border border-gray-200 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300"
             onChange={handleChange}
           />
+          <div>
+            <input
+              ref={passwordRef}
+              name="password"
+              id="password"
+              placeholder="Click the buttons to set password combination"
+              className="pl-3 pr-28 py-3 mt-1 text-lg block w-full border border-gray-400 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300"
+              disabled
+            />
+            <div className="flex gap-2 py-4">
+              <button
+                className="bg-gray-300 rounded-md p-2 hover:bg-blue-400"
+                onClick={() => handleButtonClick("up")}
+              >
+                {/* Add your up icon here */}
+                <ArrowBigUp className="text-purple-800" />
+              </button>
+              <button
+                className="bg-gray-300 rounded-md p-2 hover:bg-blue-400"
+                onClick={() => handleButtonClick("down")}
+              >
+                {/* Add your down icon here */}
+                <ArrowBigDown  className="text-purple-800"/>
+              </button>
+              <button
+                className="bg-gray-300 rounded-md p-2 hover:bg-blue-400"
+                onClick={() => handleButtonClick("down")}
+              >
+                {/* Add your down icon here */}
+                <ArrowBigLeft  className="text-purple-800"/>
+              </button>
+              <button
+                className="bg-gray-300 rounded-md p-2 hover:bg-blue-400"
+                onClick={() => handleButtonClick("down")}
+              >
+                {/* Add your down icon here */}
+                <ArrowBigRight className="text-purple-800" />
+              </button>
+              <button
+                className="bg-gray-300 rounded-md p-2 hover:bg-blue-400"
+                onClick={() => handleButtonClick("down")}
+              >
+                {/* Add your down icon here */}
+                <Square className="text-green-600" />
+              </button>
+              <button
+                className="bg-gray-300 rounded-md p-2 hover:bg-blue-400"
+                onClick={() => handleButtonClick("down")}
+              >
+                {/* Add your down icon here */}
+                <Circle className="text-sky-700" />
+              </button>
+              <button
+                className="bg-gray-300 rounded-md p-2 hover:bg-blue-400"
+                onClick={() => handleButtonClick("down")}
+              >
+                {/* Add your down icon here */}
+                <Triangle className="text-red-600" />
+              </button>
+              <button
+                className="bg-gray-300 rounded-md p-2 hover:bg-blue-400"
+                onClick={() => handleButtonClick("down")}
+              >
+                {/* Add your down icon here */}
+                <X className='text-yellow-600' />
+              </button>
+              <button
+                className="bg-red-600 px-4 py-2 text-white hover:bg-red-400"
+                onClick={() => handleButtonClick("down")}
+              >
+                {/* Add your down icon here */}
+                Clear
+              </button>
+            </div>
+          </div>
+
           <button
             className={clsx(
               "flex items-center p-1 justify-center px-4 h-10 text-lg border bg-blue-500 text-white rounded-md focus:outline-none focus:ring focus:ring-blue-300 hover:bg-blue-700 focus:bg-blue-700",
@@ -133,3 +229,5 @@ export function GalleryCreateForm() {
     </>
   );
 }
+
+
