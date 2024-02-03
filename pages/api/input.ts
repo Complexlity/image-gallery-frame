@@ -54,7 +54,17 @@ export default async function handler(
 
 			if (currentPage > 5 && buttonId == 2) {
 				//End of page. Fetch result
-				const imageUrl = `${process.env['HOST']}/finalImage?input=${input}`
+        const key = `ipfs_file:${input}`;
+        const ipfsCID = await kv.get(key);
+				let finalImageUrl: string;
+				console.log({ ipfsCID });
+
+        if (ipfsCID) {
+          finalImageUrl = process.env["HOST"] + "/ipfs/" + ipfsCID;
+        }
+				else {
+					finalImageUrl = `${process.env['HOST']}/finalImage?input=${input}`
+				}
 				const postUrl = `${process.env["HOST"]}/api/input?page=2`;
 
 				res.setHeader("Content-Type", "text/html");
@@ -64,11 +74,11 @@ return  res.status(200).send(`
         <head>
           <title></title>
           <meta property="og:title" content="Final Image">
-          <meta property="og:image" content="${imageUrl}">
+          <meta property="og:image" content="${finalImageUrl}">
           <meta name="fc:frame" content="vNext">
-          <meta name="fc:frame:image" content="${imageUrl}">
+          <meta name="fc:frame:image" content="${finalImageUrl}">
           <meta name="fc:frame:post_url" content="${postUrl}"
-					<meta name="fc:frame:button:1" content="Fetch Again" />
+					<meta name="fc:frame:button:1" content="Fetch Another" />
         </head>
         <body>
 

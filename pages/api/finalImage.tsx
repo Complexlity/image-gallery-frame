@@ -19,23 +19,8 @@ export default async function handler(
   if (req.method === "POST") {
 
     try {
-      const input = req.query.input as unknown as string;
 
-      console.log({ input })
-      const key = `ipfs_file:${input}`;
-      console.log({key})
-      const ipfsCID = await kv.get(key)
-      console.log({ipfsCID})
-
-      if (ipfsCID) {
-        const imageUrl = process.env['HOST'] + '/ipfs/' + ipfsCID
-        res.setHeader("Content-Type", "image/png");
-        res.setHeader("Cache-Control", "max-age=10");
-        res.send(imageUrl);
-
-      }
-      else {
-        const svg = await satori(
+  const svg = await satori(
           <div
             style={{
               justifyContent: "flex-start",
@@ -85,9 +70,7 @@ export default async function handler(
         res.send(pngBuffer);
 
       }
-
-
-    } catch (error) {
+     catch (error) {
       console.error(error);
       res.status(500).send("Error generating image");
     }
