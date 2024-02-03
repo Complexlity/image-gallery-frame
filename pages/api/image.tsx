@@ -21,9 +21,12 @@ const mapping = {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const input = req.query.input as unknown as string
+  let inputAsArray = []
+  for (let i = 0; i < input.length; i++){
+    inputAsArray.push(input[i])
+  }
 
-  const inputAsArray = input.split("")
-  console.log(input)
+
 
   try {
 
@@ -52,15 +55,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               }}
             >
               <h1>Combination</h1>
-              {input && input != "" &&
+              {inputAsArray.length > 0
+                ?
                 (<div style={{ display: "flex" }}>
                   {inputAsArray.map(
                     (item) =>
                       //@ts-expect-error
                       `${mapping[item]},`
                   )}
+
                 </div>
-                )}
+                )
+                : null
+              }
             </div>
           </div>,
           {

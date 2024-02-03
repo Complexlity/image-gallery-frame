@@ -69,9 +69,7 @@ export default async function handler(
 			let currentPage = req.query.page as unknown as number
 			console.log({currentPage})
 			let nextPage = +currentPage
-			if (buttonId == 1) {
-				nextPage =	+currentPage + 1
-			}
+
 
 			let input = req.query.input as unknown as string
 			console.log({input})
@@ -79,6 +77,10 @@ export default async function handler(
 			console.log({nextInput})
 			console.log({nextInput})
 
+			if (buttonId == 1) {
+				nextPage = +currentPage + 1;
+				nextInput = input
+      }
 
 
 			let buttonsTemplate = ''
