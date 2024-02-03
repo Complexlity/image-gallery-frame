@@ -71,16 +71,16 @@ export default async function handler(
 			let nextPage = +currentPage
 
 
-			let input = req.query.input as unknown as string
+			let input = req.query.input as unknown as string ?? ""
 			console.log({ input })
 			console.log({ buttonId })
-			
+
 			let nextInput
 			if (buttonId == 2 || buttonId == 3) {
-				nextInput = input + getNextInput(currentPage, buttonId)
+				nextInput = input + getNextInput(currentPage, buttonId) ?? ''
 			}
 			else if (buttonId == 1) {
-				nextInput = input
+				nextInput = input ?? ''
 			}
 			else {
 				nextInput = ''
@@ -164,7 +164,7 @@ return  res.status(200).send(`
 				nextInput = ""
 			}
 			if (buttonId == 1) {
-				nextInput = input
+				nextInput = input ?? ''
 			}
 
 
