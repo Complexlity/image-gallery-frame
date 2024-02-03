@@ -1,26 +1,22 @@
 "use client";
 
 import clsx from "clsx";
-import { customAlphabet } from "nanoid";
-import { useRouter } from "next/navigation";
 import {
-  ChangeEvent,
-  useEffect,
-  useRef,
-  useState
-} from "react";
-import { useUploadThing } from "../utils/uploadthing";
-import { Brush } from 'lucide-react';
-import {
-  ArrowBigUp,
   ArrowBigDown,
   ArrowBigLeft,
   ArrowBigRight,
-  Square,
+  ArrowBigUp,
   Circle,
+  Square,
   Triangle,
   X
 } from "lucide-react";
+import { customAlphabet } from "nanoid";
+import {
+  ChangeEvent,
+  useRef,
+  useState
+} from "react";
 
 
 const HOST = process.env.NEXT_PUBLIC_HOST

@@ -22,10 +22,12 @@ export async function generateMetadata(
 
   const fcMetadata: Record<string, string> = {
     "fc:frame": "vNext",
-    "fc:frame:post_url": `${process.env["HOST"]}/api/toggle?id=${id}1`,
+    "fc:frame:post_url": `${process.env["HOST"]}/api/input?page=2`,
     // "fc:frame:image": `${imageUrl}`,
-    "fc:frame:button:1": "Prev",
-    "fc:frame:button:2": "Next",
+    "fc:frame:button:1": "->",
+    "fc:frame:button:2": "Up",
+    "fc:frame:button:3": "Down",
+    "fc:frame:button:4": "Clear",
   };
 
   return {
