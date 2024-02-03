@@ -65,14 +65,18 @@ export default async function handler(
 		try {
 
 			let buttonId = req.body.untrustedData.buttonIndex || 2;
+			console.log({buttonId})
 			let currentPage = req.query.page as unknown as number
+			console.log({currentPage})
 			let nextPage = +currentPage
 			if (buttonId == 1) {
 				nextPage =	+currentPage + 1
 			}
 
 			let input = req.query.input as unknown as string
+			console.log({input})
 			let nextInput = input + getNextInput(currentPage, buttonId)
+			console.log({nextInput})
 			console.log({nextInput})
 
 
@@ -143,7 +147,7 @@ return  res.status(200).send(`
 					`
 				}
 
-			if (buttonId == 4) {
+			if (buttonId == 1) {
 				nextInput = ""
 			}
 
