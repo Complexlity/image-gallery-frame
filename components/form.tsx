@@ -50,11 +50,22 @@ export function GalleryCreateForm() {
    try {
      e.preventDefault();
      setIsLoading(true);
+     setLoadingMessage("Uploading...")
      console.log({file})
      const formData = new FormData();
      formData.append("file", file);
      formData.append("name", fileName ?? file.name)
+    //  const myPromise = new Promise((resolve) => {
+    //    setTimeout(() => {
+    //      console.log("resolved promise")
+    //      resolve("I resolved")
+    //    }, 5000);
+    //  })
 
+    //  const ress = await myPromise
+    //  console.log({ress})
+     //  return
+     console.log({fileName: formData.get('name')})
      const res = await fetch("/api/files", {
        method: "POST",
        body: formData,
@@ -67,6 +78,7 @@ export function GalleryCreateForm() {
      alert("Trouble uploading file");
    } finally {
      setIsLoading(false)
+     setLoadingMessage("Create")
    }
   }
 
@@ -109,7 +121,7 @@ export function GalleryCreateForm() {
             className={clsx(
               "flex items-center p-1 justify-center px-4 h-10 text-lg border bg-blue-500 text-white rounded-md focus:outline-none focus:ring focus:ring-blue-300 hover:bg-blue-700 focus:bg-blue-700",
               isLoading &&
-                "disabled cursor-not-allowed bg-blue-100 hover:bg-blue-100 focus:bg-blue-100"
+                "disabled cursor-not-allowed bg-blue-300 hover:bg-blue-300 focus:bg-blue-300"
             )}
             type="submit"
             disabled={isLoading}
