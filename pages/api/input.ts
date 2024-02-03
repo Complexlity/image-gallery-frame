@@ -30,7 +30,7 @@ function getNextInput(page: number, buttonId: number) {
 	if (page == 5) {
 		nextInput = buttonId == 2 ? 't' : 'x'
 	}
-	
+
 	return nextInput;
 }
 
@@ -66,7 +66,11 @@ export default async function handler(
 
 			let buttonId = req.body.untrustedData.buttonIndex || 2;
 			let currentPage = req.query.page as unknown as number
-			let nextPage = +currentPage + 1
+			let nextPage = +currentPage
+			if (buttonId == 1) {
+				nextPage =	+currentPage + 1
+			}
+
 			let input = req.query.input as unknown as string
 			let nextInput = input + getNextInput(currentPage, buttonId)
 			console.log({nextInput})
@@ -141,8 +145,8 @@ return  res.status(200).send(`
 
 			if (buttonId == 4) {
 				nextInput = ""
-				nextPage = currentPage
-}
+			}
+
 
 
 const imageUrl = `${process.env['HOST']}/api/image?input=${nextInput}`
