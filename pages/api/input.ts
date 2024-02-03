@@ -4,15 +4,35 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 const buttons = ['up', 'down', 'left', 'right', 'square', 'circle', 'triangle', 'x']
 const mapping = {
-  u: "up",
-  d: "down",
-  l: "left",
-  r: "right",
-  s: "square",
-  c: "circle",
-  t: "triangle",
-  x: "x",
+   "up" : "u",
+   "down" : "d",
+   "left" : "l",
+   "right" : "r",
+   "square" : "s",
+   "circle" : "c",
+   "triangle" : "t",
+   "x" : "x",
 };
+
+function getNextInput(page: number, buttonId: number) {
+	let nextInput = ''
+	if (page == 2) {
+		nextInput = buttonId == 2 ? 'u' : 'd'
+	}
+	if (page == 3) {
+		nextInput = buttonId == 2 ? 'l' : 'r'
+
+	}
+	if (page == 4) {
+		nextInput = buttonId == 2 ? 's' : 'c'
+
+	}
+	if (page == 5) {
+		nextInput = buttonId == 2 ? 't' : 'x'
+	}
+	return nextInput;
+}
+
 function getUsedButtons(page: number) {
 	let usedButtons;
 				switch (page) {
@@ -47,6 +67,8 @@ export default async function handler(
 			let currentPage = req.query.page as unknown as number
 			let nextPage = +currentPage + 1
 			let input = req.query.input as unknown as string
+			let nextInput = input + getNextInput(currentPage, buttonId)
+			console.log({nextInput})
 
 
 
@@ -131,7 +153,7 @@ return  res.status(200).send(`
           <meta name="fc:frame" content="vNext">
           <meta name="fc:frame:image" content="">
           <meta name="fc:frame:post_url" content="${process.env["HOST"]
-					}/api/input?page=${nextPage}">
+					}/api/input?page=${nextPage}&input=${nextInput}">
 					${buttonsTemplate}
         </head>
         <body>
