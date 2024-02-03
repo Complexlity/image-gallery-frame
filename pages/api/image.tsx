@@ -26,6 +26,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     inputAsArray.push(input[i])
   }
 
+  console.log({input})
+  console.log({inputAsArray})
 
 
   try {
