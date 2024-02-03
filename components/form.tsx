@@ -43,32 +43,36 @@ export function GalleryCreateForm() {
   // const [visibility, setVisibility] = useState('public')
   const [password, setPassword] = useState<string[]>([])
 
-
-  const { startUpload } = useUploadThing("imageUploader", {
-    onClientUploadComplete: () => {},
-    onUploadError: () => {
-      // alert("error occurred while uploading");
-      throw new Error("something went wrong while uploading");
-    },
-    onUploadBegin: () => {
-      //  alert("upload has begun");
-    },
-  });
+  function passwordToString(password: string[]) {
+    let passwordString = ''
+    password.forEach(item => {
+      passwordString += item[0]
+    })
+    return passwordString
+}
 
 
 
   async function handleSubmit(e: any) {
-    if(!file) return
+    e.preventDefault();
+    if (!file || password.length === 0) {
+      setError("File or Combination Missing")
+      return
+    }
    try {
-     e.preventDefault();
      setIsLoading(true);
      setLoadingMessage("Uploading...")
      console.log({file})
      const formData = new FormData();
      formData.append("file", file);
      formData.append("name", fileName ?? file.name)
+     const passwordAsString = passwordToString(password)
+     formData.append("password", passwordAsString)
 
+     const passwordString = formData.get('password')
+     console.log({passwordString})
 
+    return
     //  const myPromise = new Promise((resolve) => {
     //    setTimeout(() => {
     //      console.log("resolved promise")
@@ -221,6 +225,7 @@ export function GalleryCreateForm() {
                 Clear
               </button>
             </div>
+
           </div>
 
           <button
@@ -243,14 +248,20 @@ export function GalleryCreateForm() {
 
 function PasswordButtons({ password }: { password: string[] }) {
   const mapping = {
-    up: <ArrowBigUp className="fill-purple-800 text-purple-800" />,
-    down: <ArrowBigDown className="fill-purple-800 text-purple-800" />,
-    left: <ArrowBigLeft className="fill-purple-800 text-purple-800" />,
-    right: <ArrowBigRight className="fill-purple-800 text-purple-800" />,
-    square: <Square className="fill-green-600 text-green-600" />,
-    circle: <Circle className="fill-sky-700 text-sky-700" />,
-    triangle: <Triangle className="fill-red-600 text-red-700" />,
-    x: <X className="fill-yellow-600 text-yellow-600" />,
+    up: <ArrowBigUp  className="fill-purple-800 text-purple-800" />,
+    down: (
+      <ArrowBigDown  className="fill-purple-800 text-purple-800" />
+    ),
+    left: (
+      <ArrowBigLeft  className="fill-purple-800 text-purple-800" />
+    ),
+    right: (
+      <ArrowBigRight  className="fill-purple-800 text-purple-800" />
+    ),
+    square: <Square  className="fill-green-600 text-green-600" />,
+    circle: <Circle  className="fill-sky-700 text-sky-700" />,
+    triangle: <Triangle  className="fill-red-600 text-red-700" />,
+    x: <X  className="fill-yellow-600 text-yellow-600" />,
   };
 
   return (
@@ -258,8 +269,10 @@ function PasswordButtons({ password }: { password: string[] }) {
       {password.map(
         (item, index) =>
           // Use square bracket notation to dynamically access the corresponding JSX icon
-          //@ts-expect-error
-          mapping[item]
+          <div key="index">
+            {/*@ts-expect-error */}
+            {mapping[item]}
+          </div>
       )}
     </div>
   );
