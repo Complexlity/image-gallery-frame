@@ -73,7 +73,8 @@ export default async function handler(
 
 			let input = req.query.input as unknown as string
 			console.log({ input })
-			console.log({buttonId})
+			console.log({ buttonId })
+			
 			let nextInput
 			if (buttonId == 2 || buttonId == 3) {
 				nextInput = input + getNextInput(currentPage, buttonId)
