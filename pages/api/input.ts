@@ -159,7 +159,7 @@ return  res.status(200).send(`
 const imageUrl = `${process.env['HOST']}/api/image?input=${nextInput}`
 const postUrl = `${process.env["HOST"]}/api/input?page=${nextPage}&input=${nextInput}`;
 
-
+console.log({ nextInput, nextPage, currentPage})
 
 				res.setHeader("Content-Type", "text/html");
 				res.status(200).send(`
