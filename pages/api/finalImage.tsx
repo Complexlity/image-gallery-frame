@@ -19,7 +19,7 @@ export default async function handler(
   if (req.method === "POST") {
 
     try {
-      const input = req.query.input
+      const input = req.query.input as unknown as string;
 
       const ipfsCID = await kv.get(input)
       if (ipfsCID) {
