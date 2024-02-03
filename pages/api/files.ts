@@ -1,5 +1,6 @@
 //@ts-nocheck
 
+import { kv } from "@vercel/kv";
 import formidable from "formidable";
 import fs from "fs";
 const pinataSDK = require("@pinata/sdk");
@@ -38,13 +39,30 @@ export default async function handler(req, res) {
             console.log({ err });
             return res.status(500).send("Upload Error");
           }
-          console.log({fields})
-          console.log({files})
+          const password = fields.password
+          console.log({password})
+          const ipfsCID = await kv.get(`ipfs_file:${password}`)
+          console.log({ipfsCID})
+          if (ipfsCID) {
+            return res.status(500).json({
+              success: false,
+              error: "Combination Already Exists"
+            });
+          }
+
+
           const response = await saveFile(files.file, fields);
           console.log({response})
           const { IpfsHash } = response;
 
-          return res.status(200).send(IpfsHash);
+          const result = await kv.set(`ipfs_file:${password}`, IpfsHash)
+
+
+          return res.status(200).json({
+            result,
+            IpfsHash,
+            password
+          })
         } catch (error) {
           console.log(error);
      return  res.status(500).send("Upload Failed");

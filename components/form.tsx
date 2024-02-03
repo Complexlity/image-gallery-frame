@@ -59,20 +59,19 @@ export function GalleryCreateForm() {
       setError("File or Combination Missing")
       return
     }
-   try {
+    try {
+     setError("")
      setIsLoading(true);
      setLoadingMessage("Uploading...")
      console.log({file})
      const formData = new FormData();
      formData.append("file", file);
-     formData.append("name", fileName ?? file.name)
+     formData.append("name", fileName == "" ? file.name : fileName )
      const passwordAsString = passwordToString(password)
      formData.append("password", passwordAsString)
 
      const passwordString = formData.get('password')
-     console.log({passwordString})
 
-    return
     //  const myPromise = new Promise((resolve) => {
     //    setTimeout(() => {
     //      console.log("resolved promise")
@@ -83,17 +82,29 @@ export function GalleryCreateForm() {
     //  const ress = await myPromise
     //  console.log({ress})
      //  return
-     console.log({fileName: formData.get('name')})
+    //  console.log({fileName: formData.get('name')})
+
      const res = await fetch("/api/files", {
        method: "POST",
        body: formData,
-     });
-     const ipfsHash = await res.text();
-     console.log(ipfsHash)
+     })
+
+     const response = await res.json();
+     console.log({response})
+     if (response.error) {
+       throw new Error(response.error)
+     }
+      setFile(null)
+      setPassword([])
+
+      //@ts-expect-error
+      imagesRef!.current!.value = null
+
    } catch (e) {
-     console.log(e);
+     console.log("I am here")
      setIsLoading(false);
-     alert("Trouble uploading file");
+     //@ts-expect-error
+     setError(e.message)
    } finally {
      setIsLoading(false)
      setLoadingMessage("Create")
