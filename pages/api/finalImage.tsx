@@ -22,8 +22,10 @@ export default async function handler(
       const input = req.query.input as unknown as string;
 
       console.log({ input })
-
-      const ipfsCID = await kv.get(`ipfs_files:${input}`)
+      const key = `ipfs_file:${input}`;
+      console.log({key})
+      const ipfsCID = await kv.get(key)
+      console.log({ipfsCID})
 
       if (ipfsCID) {
         const imageUrl = process.env['HOST'] + '/ipfs/' + ipfsCID
