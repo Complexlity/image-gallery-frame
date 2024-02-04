@@ -34,7 +34,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 			return res.status(500).json({ error: "Invalid Files", success: false })
 		}
 
-
+		if (!parsedValues.password) {
+			return res.status(422).json({
+				error: "Password Missing",
+				success: false
+			})
+		}
 		if (!parsedValues.galleryId) parsedValues.galleryId = nanoid();
 
 

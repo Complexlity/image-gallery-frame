@@ -75,6 +75,10 @@ export function GalleryCreateForm() {
       setError("No File Chosen");
       return;
     }
+    if (!password) {
+      setError("Enter A Password");
+      return;
+    }
     // if (visibility === "private" && !password) {
     //   setPasswordError('Private galleries must have a password')
     //   return
@@ -273,9 +277,10 @@ export function GalleryCreateForm() {
 
           <div>
             <input
+              required
               name="password"
               id="password"
-              placeholder="Enter a password (optional)"
+              placeholder="Enter a password"
               className="pl-3 pr-28 py-3 mt-1 text-lg block w-full border border-gray-400 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300"
               value={password}
               onChange={(e) => {
@@ -283,7 +288,7 @@ export function GalleryCreateForm() {
               }}
             />
             {/* <small className="text-red-400">{passwordError}</small> */}
-            <details className="text-start pl-3 pr-28 mt-1">
+            {/* <details className="text-start pl-3 pr-28 mt-1">
               <summary className="text-gray-600">When to put a password?</summary>
               <ul>
                 <li>
@@ -293,7 +298,7 @@ export function GalleryCreateForm() {
                   2. Use something you can remember. If you forget it, it's gone
                 </li>
               </ul>
-            </details>
+            </details> */}
           </div>
 
           <input

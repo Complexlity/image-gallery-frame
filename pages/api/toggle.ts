@@ -4,13 +4,14 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 
 const ENVI = process.env.ENVI ?? 'devv'
-const READ_MORE_LINK = null
+const USE_READ_MORE_LINK = true
 
 // const HUB_URL = process.env['HUB_URL'] || "nemes.farcaster.xyz:2283"
 // const client = getSSLHubRpcClient(HUB_URL);
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'POST') {
+
         console.log({requestBody: req.body})
         try {
 
@@ -38,6 +39,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             // console.log({validatedMessage})
             let buttonId = req.body.untrustedData.buttonIndex || 2
             console.log({ buttonId })
+            const readmore = req.query.readmore ?? "0";
+
+            if (readmore == "1" && buttonId == 3) {
+                console.log("I will redirect")
+                return res.redirect(302, `${process.env["HOST"]}/api/redirect`);
+            }
+
             let idNext = req.query.id as unknown as string
             let id = idNext.slice(0, idNext.length - 1)
             // let queryySort = parseInt(idSortNext[idSortNext.length - 2])
@@ -131,7 +139,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             // let finalSort = sort === "desc" ? 0 : 1
 
             let showReadMore = curr === sortedValuesLength - 1
-            if(!READ_MORE_LINK) showReadMore = false
+            if(!USE_READ_MORE_LINK) showReadMore = false
             // Return an HTML response
             res.setHeader('Content-Type', 'text/html');
             res.status(200).send(`
@@ -143,10 +151,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           <meta property="og:image" content="${currentItem.url}">
           <meta name="fc:frame" content="vNext">
           <meta name="fc:frame:image" content="${currentItem.url}">
-          <meta name="fc:frame:post_url" content="${process.env['HOST']}/api/toggle?id=${id}${next}">
+          <meta name="fc:frame:post_url" content="${process.env['HOST']}/api/toggle?id=${id}${next}&readmore=${showReadMore ? 1 : 0}">
           <meta name="fc:frame:button:1" content="Prev">
           <meta name="fc:frame:button:2" content="Next">
-          ${showReadMore ? `<meta name= "fc:frame:button:3" content = "Read More" >` : ""}
+          ${showReadMore ? `<meta name= "fc:frame:button:3" content = "Read More" >
+          <meta name ="fc:frame:button:3:action" content="post_redirect" />
+          ` : ""}
 
         </head>
         <body>
