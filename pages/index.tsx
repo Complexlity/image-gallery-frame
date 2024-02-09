@@ -24,7 +24,7 @@ const Home = ({totalGalleriesCreated}: {totalGalleriesCreated: number}) => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="text-center text-2xl p-4 absolute top-0 left-0 right-0 flex gap-2 content-center justify-center">
+      <div className="text-center text-md p-4 absolute top-0 left-0 right-0 flex gap-2 content-center justify-center">
         <span>
           Built by{" "}
           <a
@@ -47,8 +47,8 @@ const Home = ({totalGalleriesCreated}: {totalGalleriesCreated: number}) => {
       </div>
       <div className="flex flex-col items-center justify-center min-h-screen py-2">
         <main className="flex flex-col items-center justify-center flex-1 px-4 sm:px-20 text-center">
-          <div className="flex justify-center items-center bg-black rounded-full w-12 h-12  my-8">
-            <VercelLogo className="h-8  invert p-3 mb-1" />
+          <div className="flex justify-center items-center bg-black rounded-full w-12 h-12 mt-16 mb-1">
+            <VercelLogo className="h-8  invert p-3" />
           </div>
           <h1 className="text-lg sm:text-2xl font-bold mb-2">
             Farcaster Gallery
