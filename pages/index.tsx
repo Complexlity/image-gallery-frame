@@ -24,6 +24,27 @@ const Home = ({totalGalleriesCreated}: {totalGalleriesCreated: number}) => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <div className="text-center text-2xl p-4 absolute top-0 left-0 right-0 flex gap-2 content-center justify-center">
+        <span>
+          Built by{" "}
+          <a
+            href="https://warpcast.com/complexlity"
+            className="underline hover:no-underline text-amber-600"
+          >
+            Complexlity
+          </a>
+          .
+        </span>
+        <span>
+          View source on{" "}
+          <a
+            href="https://github.com/Complexlity/image-gallery-frame"
+            className="underline hover:no-underline text-purple-900"
+          >
+            GitHub
+          </a>
+        </span>
+      </div>
       <div className="flex flex-col items-center justify-center min-h-screen py-2">
         <main className="flex flex-col items-center justify-center flex-1 px-4 sm:px-20 text-center">
           <div className="flex justify-center items-center bg-black rounded-full w-12 h-12  my-8">
@@ -33,7 +54,8 @@ const Home = ({totalGalleriesCreated}: {totalGalleriesCreated: number}) => {
             Farcaster Gallery
           </h1>
           <p className="text-xl my-2 font-bold">
-            Total Galleries Created: <span className="font-normal">{totalGalleriesCreated}</span>
+            Total Galleries Created:{" "}
+            <span className="font-normal">{totalGalleriesCreated}</span>
           </p>
           <h2 className="text-md sm:text-xl mx-4">
             Upload Images To Your Gallery. Max per time (5)
