@@ -56,6 +56,9 @@ dependencies:
   sharp:
     specifier: ^0.33.2
     version: 0.33.2
+  slugify:
+    specifier: ^1.6.6
+    version: 1.6.6
   tailwindcss:
     specifier: 3.4.1
     version: 3.4.1
@@ -1668,6 +1671,11 @@ packages:
     resolution: {integrity: sha512-JA//kQgZtbuY83m+xT+tXJkmJncGMTFT+C+g2h2R9uxkYIrE2yy9sgmcLhCnw57/WSD+Eh3J97FPEDFnbXnDUg==}
     dependencies:
       is-arrayish: 0.3.2
+    dev: false
+
+  /slugify@1.6.6:
+    resolution: {integrity: sha512-h+z7HKHYXj6wJU+AnS/+IH8Uh9fdcX1Lrhg1/VMdf9PwoBQXFcXiAdsy2tSK0P6gKwJLXp02r90ahUCqHk9rrw==}
+    engines: {node: '>=8.0.0'}
     dev: false
 
   /source-map-js@1.0.2:

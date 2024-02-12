@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { kv } from "@vercel/kv";
 import { customAlphabet } from "nanoid";
+import slugify from "slugify";
 
 
 const ENVI = process.env.ENVI ?? "devv"
@@ -36,28 +37,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
 
 		if (!parsedValues.galleryId) parsedValues.galleryId = nanoid();
+		else parsedValues.galleryId = slugify(
+			parsedValues.galleryId, {
+				replacement: "-",
+				lower: true,
+				trim: true
+			}
+		)
 
 
-
-		// try {
-		// 	let typeValue = await kv.get(`${parsedValues.galleryId}:type:${ENVI}`)
-		// 	console.log({typeValue})
-		// 	if (typeValue) {
-		// 		parsedValues.visibility = typeValue as "public" | "private"
-		// 	}
-		// }
-		// catch(error) {
-		// 	console.log({error})
-		// 	return res.status(500).json({success:false, error: "Something Went Wrong"})
-		// }
-
-// if (parsedValues.visibility !== "private") parsedValues.visibility = "public";
-// 		if (parsedValues.visibility === "public") parsedValues.password = "";
-// 		if (parsedValues.visibility === "private" && !parsedValues.password) {
-// 			return res.status(500).json({
-// 				success: false, error: "Private Galleries must have password"
-// 			})
-// 		}
 		console.log("After check")
 		console.log({parsedValues})
 		let kvId = `${parsedValues.galleryId}:${ENVI}`
