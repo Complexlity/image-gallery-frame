@@ -3,44 +3,35 @@
 import clsx from "clsx";
 import { customAlphabet } from "nanoid";
 import { useRouter } from "next/navigation";
-import {
-  useEffect,
-  useRef,
-  useState
-} from "react";
+import { useEffect, useRef, useState } from "react";
 import { useUploadThing } from "../utils/uploadthing";
 
-const HOST = process.env.NEXT_PUBLIC_HOST
+const HOST = process.env.NEXT_PUBLIC_HOST;
 
 export function GalleryCreateForm() {
-
-  const nanoid = customAlphabet('0123456789abcdefghijklmnopqrstuvwxyz', 7)
-  const [initialUploadSortingType, setInitialUploadSortingType] = useState<File[]>([]);
-  const [displayedFileList, setDisplayedFileList] = useState<File[]>([])
+  const nanoid = customAlphabet("0123456789abcdefghijklmnopqrstuvwxyz", 7);
+  const [initialUploadSortingType, setInitialUploadSortingType] = useState<
+    File[]
+  >([]);
+  const [displayedFileList, setDisplayedFileList] = useState<File[]>([]);
 
   const [error, setError] = useState("");
   const [imageId, setImageId] = useState("");
   const imagesRef = useRef<HTMLInputElement>(null);
-  const [isLoading, setIsLoading] = useState(false)
-  const [loadingMessage, setLoadingMessage] = useState('')
-  const [warpcastUrl, setWarpcastUrl] = useState('')
-  const [copied, setCopied] = useState(false)
-  const router = useRouter()
-  // const [visibility, setVisibility] = useState('public')
-  const [password, setPassword] = useState('')
-  // const [passwordError, setPasswordError] = useState("")
-  const [sortingType, setSortingType] = useState('')
-  const [sortingMethod, setSortingMethod] = useState('asc')
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState("");
+  const [warpcastUrl, setWarpcastUrl] = useState("");
+  const [copied, setCopied] = useState(false);
+  const [password, setPassword] = useState("");
+  const [sortingType, setSortingType] = useState("");
+  const [sortingMethod, setSortingMethod] = useState("asc");
 
   const { startUpload } = useUploadThing("imageUploader", {
     onClientUploadComplete: () => {},
     onUploadError: () => {
-      // alert("error occurred while uploading");
       throw new Error("something went wrong while uploading");
     },
-    onUploadBegin: () => {
-      //  alert("upload has begun");
-    },
+    onUploadBegin: () => {},
   });
 
   function showImages(e: any) {
@@ -54,10 +45,8 @@ export function GalleryCreateForm() {
     }
     for (let i = 0; i < files.length; i++) {
       const curr = files[i];
-      const currType = curr.type.replace(/(.*)\//g, "")
-      if (
-        !(['png', 'jpeg', 'jpg', 'webp', 'gif'].includes(currType))
-      ) {
+      const currType = curr.type.replace(/(.*)\//g, "");
+      if (!["png", "jpeg", "jpg", "webp", "gif"].includes(currType)) {
         setError("Only jpeg, png, jpg ,webp and gifs files are allowed");
         setInitialUploadSortingType([]);
         e.target.value = "";
@@ -69,141 +58,117 @@ export function GalleryCreateForm() {
   }
 
   async function handleSubmit(event: any) {
-    setError('')
+    setError("");
     event.preventDefault();
     if (displayedFileList.length === 0) {
       setError("No File Chosen");
       return;
     }
-    // if (visibility === "private" && !password) {
-    //   setPasswordError('Private galleries must have a password')
-    //   return
-    // }
-
-    // event.target.reset()
-    // setUploadedFiles([])
-    // setError('')
-    setIsLoading(true)
-    setLoadingMessage("Uploading Images...")
+    setIsLoading(true);
+    setLoadingMessage("Uploading Images...");
 
     let filesUploaded;
 
     try {
-      console.log({displayedFileList})
+      console.log({ displayedFileList });
       const fileUploadResponse = await startUpload(displayedFileList).catch(
         (err) => {
           console.log({ err });
         }
       );
-      filesUploaded = fileUploadResponse
-        console.log({filesUploaded})
+      filesUploaded = fileUploadResponse;
     } catch (error) {
-      console.log({error})
-      setError("Something went wrong uploading the files")
+      console.log({ error });
+      setError("Something went wrong uploading the files");
     }
-
 
     // let filesUploaded = true
     if (filesUploaded) {
-      setLoadingMessage("Creating Gallery...")
+      setLoadingMessage("Creating Gallery...");
       const filesToSendToKVStore = filesUploaded.map((file, index) => {
-        return {url: file.url, created_at: Date.now() + index}
-      })
-      // let filesToSendToKVStore = [
-      //   {
-      //     url: "https://utfs.io/f/f0a1953e-ee22-4df0-8729-79e1d812908b-t9c4e1.jpg",
-      //     created_at: 1706533978235,
-      //   },
-      //   {
-      //     url: "https://utfs.io/f/e82cfc67-2049-4bd2-b32e-27d86f507cef-t9c4e2.jpg",
-      //     created_at: 1706533978236,
-      //   },
-      // ];
+        return { url: file.url, created_at: Date.now() + index };
+      });
 
-      const galleryId = imageId || nanoid()
+      const galleryId = imageId || nanoid();
       const payload = {
         galleryId,
         filesToSendToKVStore,
-        // visibility: visibility !== "private" ?  'public' : "private",
-        password
-      }
-      console.log({payload})
+        password,
+      };
       try {
         const res = await fetch("api/upload-gallery", {
-          method: 'POST',
-          body: JSON.stringify(payload)
-        })
+          method: "POST",
+          body: JSON.stringify(payload),
+        });
 
-        const result = await res.json()
-
-        console.log({result})
+        const result = await res.json();
         if (!result.success) {
-          throw new Error(result.error)
+          throw new Error(result.error);
         }
         event.target.reset();
         setInitialUploadSortingType([]);
         setError("");
-        setWarpcastUrl(`${HOST}/gallery/${galleryId}`)
-        setImageId('')
-        setPassword('')
-        // setVisibility("public")
-        // setPasswordError("")
+        setWarpcastUrl(`${HOST}/gallery/${galleryId}`);
+        setImageId("");
+        setPassword("");
       } catch (error) {
-        console.log({ error })
+        console.log({ error });
         //@ts-expect-error message not in error
-        setError(error?.message)
+        setError(error?.message);
       }
-
     }
-    setIsLoading(false)
-
+    setIsLoading(false);
   }
 
   useEffect(() => {
-    setDisplayedFileList(initialUploadSortingType)
+    setDisplayedFileList(initialUploadSortingType);
     if (initialUploadSortingType.length == 0) {
-      imagesRef.current!.value = ""
+      imagesRef.current!.value = "";
     }
-    setSortingMethod('default')
-    setSortingType('asc')
-  }, [initialUploadSortingType])
+    setSortingMethod("default");
+    setSortingType("asc");
+  }, [initialUploadSortingType]);
 
   useEffect(() => {
-    let finalDisplayedData: File[] = []
+    let finalDisplayedData: File[] = [];
     switch (sortingType) {
       case "default":
-        finalDisplayedData = [...initialUploadSortingType]
-        break
+        finalDisplayedData = [...initialUploadSortingType];
+        break;
       case "date":
-        finalDisplayedData = [...initialUploadSortingType].sort((a, b) => a.lastModified - b.lastModified)
-        break
-        case "name":
-          finalDisplayedData = [...initialUploadSortingType].sort((a, b) => a.name.localeCompare(b.name))
-          break
-          case "size":
-            finalDisplayedData = [...initialUploadSortingType].sort((a, b) => a.size - b.size)
-        break
+        finalDisplayedData = [...initialUploadSortingType].sort(
+          (a, b) => a.lastModified - b.lastModified
+        );
+        break;
+      case "name":
+        finalDisplayedData = [...initialUploadSortingType].sort((a, b) =>
+          a.name.localeCompare(b.name)
+        );
+        break;
+      case "size":
+        finalDisplayedData = [...initialUploadSortingType].sort(
+          (a, b) => a.size - b.size
+        );
+        break;
     }
     if (sortingMethod === "desc") {
-      finalDisplayedData = [...finalDisplayedData].reverse()
+      finalDisplayedData = [...finalDisplayedData].reverse();
     }
-    setDisplayedFileList(finalDisplayedData)
-
-  }, [sortingType])
+    setDisplayedFileList(finalDisplayedData);
+  }, [sortingType]);
   useEffect(() => {
-    setDisplayedFileList([...displayedFileList].reverse())
-  }, [sortingMethod])
-
+    setDisplayedFileList([...displayedFileList].reverse());
+  }, [sortingMethod]);
 
   function formatFileSize(_size: number) {
-     var fSExt = new Array("Bytes", "KB", "MB", "GB"),
-       i = 0;
-     while (_size > 900) {
-       _size /= 1024;
-       i++;
-     }
+    var fSExt = new Array("Bytes", "KB", "MB", "GB"),
+      i = 0;
+    while (_size > 900) {
+      _size /= 1024;
+      i++;
+    }
     var exactSize = Math.round(_size * 100) / 100 + " " + fSExt[i];
-    return exactSize
+    return exactSize;
   }
 
   return (
@@ -230,47 +195,20 @@ export function GalleryCreateForm() {
             <ul>
               <li>
                 1. If you want to have something personalized like
-                "complexlity", "itai"
+                "complexlity", "based"
               </li>
               <li>
                 2. It can be risky if you use common words (someone may have
                 already picked it)
               </li>
+              <li>
+                3. You can add more images to your gallery by supplying the same
+                id used in creation. <br />
+                <strong>NOTE:</strong> If you don't want others to add their
+                images to the gallery, put a password on initial creation.
+              </li>
             </ul>
           </details>
-
-          <div>
-            {/* <select
-              onChange={(e) => {
-                setVisibility(e.target.value);
-              }}
-              name=""
-              id=""
-              value={visibility}
-              className="pl-3 pr-28 py-3 mt-1 text-lg block w-full border border-gray-400 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300"
-            >
-              <option value="public">Public</option>
-              <option value="private">Private</option>
-            </select>
-            {visibility === "private" && ( */}
-            {/* <details className="text-start pl-3 pr-28 mt-1">
-                <summary>What are private galleries?</summary>
-                <ul>
-                  <li>
-                    1. They do not show in <a href="/gallery">all galleries</a>{" "}
-                    Page
-                  </li>
-                  <li>
-                    2. They cannot be updated without knowing the initial
-                    creation password (leave blank if you don't want to password
-                    it but still make it private)
-                  </li>
-                </ul>
-              </details>
-            ) */}
-            {/* } */}
-          </div>
-
           <div>
             <input
               name="password"
@@ -282,15 +220,18 @@ export function GalleryCreateForm() {
                 setPassword(e.target.value);
               }}
             />
-            {/* <small className="text-red-400">{passwordError}</small> */}
             <details className="text-start pl-3 pr-28 mt-1">
-              <summary className="text-gray-600">When to put a password?</summary>
+              <summary className="text-gray-600">
+                When to put a password?
+              </summary>
               <ul>
                 <li>
-                  1. If you want to prevent others from being able to update your gallery
+                  1. If you want to prevent others from being able to update
+                  your gallery
                 </li>
                 <li>
-                  2. Use something you can remember. If you forget it, it's gone
+                  2. Use something you can remember. If you forget it, you can
+                  no longer add more images to it
                 </li>
               </ul>
             </details>
@@ -315,7 +256,6 @@ export function GalleryCreateForm() {
               );
             })}
           </div>
-          {/* <small className="text-red-400">{error}</small> */}
           <div className="flex items-center py-3  px-4 mt-1 text-lg w-full border border-gray-400 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300 gap-2">
             <span className="w-full text-start">Sort By: </span>
             <select

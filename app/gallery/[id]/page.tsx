@@ -1,30 +1,28 @@
 import { kv } from "@vercel/kv";
 import { Metadata, ResolvingMetadata } from "next";
 
-
 // Opt out of caching for all data requests in the route segment
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 type Props = {
   params: { id: string };
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
-const ENVI = process.env.ENVI ?? 'devv'
+const ENVI = process.env.ENVI ?? "devv";
 
-async function getImageData(id: string, itemNumber = 0,) {
-  let values = (await kv.hgetall(`${id}:${ENVI}`)) as Record<string, unknown>;
-  console.log({ values })
-  let returnedItems
-  if(!values) returnedItems = []
+async function getImageData(id: string, itemNumber = 0) {
+  let values = (await kv.hgetall(`${id}:${ENVI}`)) as {
+    files: { url: string }[];
+  };
+  let returnedItems: { url: string }[];
+  if (!values) returnedItems = [];
   else returnedItems = values.files;
-  console.log({ returnedItems: returnedItems })
-  //@ts-expect-error
-    let returnedItem = returnedItems[+itemNumber] as {
-      url: string;
-      created_at: number;
-    };
+  let returnedItem = returnedItems[+itemNumber] as {
+    url: string;
+    created_at: number;
+  };
 
-  return { image: returnedItem?.url ?? "", next: itemNumber + 1, };
+  return { image: returnedItem?.url ?? "", next: itemNumber + 1 };
 }
 
 export async function generateMetadata(
