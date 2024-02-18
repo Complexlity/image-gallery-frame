@@ -5,7 +5,7 @@ import { customAlphabet } from "nanoid";
 import { useEffect, useRef, useState } from "react";
 import { useUploadThing } from "../utils/uploadthing";
 
-const HOST = process.env.HOST;
+const HOST = process.env.NEXT_PUBLIC_HOST;
 
 export function GalleryCreateForm() {
   const nanoid = customAlphabet("0123456789abcdefghijklmnopqrstuvwxyz", 7);
