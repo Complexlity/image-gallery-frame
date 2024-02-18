@@ -12,7 +12,13 @@ type PostBody = {
     created_at: number;
   }[];
   password: string;
+  readmore?: {
+    link: string,
+    label: "Read More" | string & {}
+  }
 };
+
+
 
 type ResponseData =
   | { success: true; data: Record<string, unknown> }
@@ -47,8 +53,12 @@ export default async function handler(
     let kvId = `${parsedValues.galleryId}:${ENVI}`;
     try {
       let preValues = (await kv.hgetall(kvId)) as {
-        files: { url: string }[];
+        files: { url: string; created_at: number }[];
         password: string;
+        readmore?: {
+          link: string;
+          label: string;
+        };
       } | null;
       if (preValues) {
         if (preValues.password !== parsedValues.password) {
@@ -63,17 +73,36 @@ export default async function handler(
           ...parsedValues.filesToSendToKVStore,
         ];
         const password = parsedValues.password;
-        console.log({ newValues, password });
-        //Add to id if it already exists
-        await kv.hset(kvId, {
-          files: newValues,
-          password,
-        });
+        //Add to id if it already exists. Also retain the initial readmore option
+
+        if (preValues.readmore) {
+          await kv.hset(kvId, {
+            files: newValues,
+            password,
+            readmore: preValues.readmore
+          })
+        }
+        else {
+          await kv.hset(kvId, {
+            files: newValues,
+            password,
+          })
+        }
+
       } else {
-        await kv.hset(kvId, {
-          files: parsedValues.filesToSendToKVStore,
-          password: parsedValues.password,
-        });
+        if (parsedValues.readmore) {
+          await kv.hset(kvId, {
+            files: parsedValues.filesToSendToKVStore,
+            password: parsedValues.password,
+            readmore: parsedValues.readmore
+          });
+        }
+        else {
+          await kv.hset(kvId, {
+            files: parsedValues.filesToSendToKVStore,
+            password: parsedValues.password,
+          });
+        }
         const zddId = `gallery_by_date:${ENVI}`;
         await kv.zadd(zddId, {
           score: Number(parsedValues.filesToSendToKVStore[0].created_at),

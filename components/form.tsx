@@ -2,11 +2,10 @@
 
 import clsx from "clsx";
 import { customAlphabet } from "nanoid";
-import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useUploadThing } from "../utils/uploadthing";
 
-const HOST = process.env.NEXT_PUBLIC_HOST;
+const HOST = process.env.HOST;
 
 export function GalleryCreateForm() {
   const nanoid = customAlphabet("0123456789abcdefghijklmnopqrstuvwxyz", 7);
@@ -25,6 +24,10 @@ export function GalleryCreateForm() {
   const [password, setPassword] = useState("");
   const [sortingType, setSortingType] = useState("");
   const [sortingMethod, setSortingMethod] = useState("asc");
+  const readmoreRef = useRef<HTMLInputElement | null>(null);
+  const [readmoreLabel, setReadmoreLabel] = useState('')
+  const [readmoreLink, setReadmoreLink] = useState('')
+  const [hasReadmore, setHasReadmore] = useState(false)
 
   const { startUpload } = useUploadThing("imageUploader", {
     onClientUploadComplete: () => {},
@@ -38,7 +41,7 @@ export function GalleryCreateForm() {
     setError("");
     let files = e.target.files as File[];
     if (files.length > 5) {
-      setError("Maximum of 10 images");
+      setError("Maximum of 5 images");
       setInitialUploadSortingType([]);
       e.target.value = "";
       return;
@@ -59,18 +62,31 @@ export function GalleryCreateForm() {
 
   async function handleSubmit(event: any) {
     setError("");
+    let usedReadMoreLabel = readmoreLabel
+
     event.preventDefault();
     if (displayedFileList.length === 0) {
       setError("No File Chosen");
       return;
     }
+
+    if (displayedFileList.length === 1) {
+      setError("Minimum of 2 images");
+      return;
+    }
+
+
+    if (hasReadmore && !readmoreLink) {
+      setError("Enter an external link or uncheck the \"Add read more\" checkbox")
+      return
+    }
+    if(hasReadmore && !usedReadMoreLabel) usedReadMoreLabel = 'Read More'
     setIsLoading(true);
     setLoadingMessage("Uploading Images...");
 
     let filesUploaded;
 
     try {
-      console.log({ displayedFileList });
       const fileUploadResponse = await startUpload(displayedFileList).catch(
         (err) => {
           console.log({ err });
@@ -90,11 +106,25 @@ export function GalleryCreateForm() {
       });
 
       const galleryId = imageId || nanoid();
-      const payload = {
-        galleryId,
-        filesToSendToKVStore,
-        password,
-      };
+      let payload
+      if (hasReadmore) {
+        payload = {
+          galleryId,
+          filesToSendToKVStore,
+          password,
+          readmore: {
+            label: usedReadMoreLabel,
+            link: readmoreLink
+          }
+      }
+      }
+     else {
+       payload = {
+         galleryId,
+         filesToSendToKVStore,
+         password,
+       };
+     }
       try {
         const res = await fetch("api/upload-gallery", {
           method: "POST",
@@ -171,6 +201,8 @@ export function GalleryCreateForm() {
     return exactSize;
   }
 
+
+
   return (
     <>
       {error && (
@@ -236,7 +268,6 @@ export function GalleryCreateForm() {
               </ul>
             </details>
           </div>
-
           <input
             ref={imagesRef}
             multiple
@@ -284,6 +315,57 @@ export function GalleryCreateForm() {
               <option value="asc">Ascending</option>
               <option value="desc">Descending</option>
             </select>
+          </div>
+          <div className=" text-lg text-start gap-2">
+            <div className="px-2">
+              <input
+                onChange={(e) => {
+                  setHasReadmore((current) => !current);
+                }}
+                ref={readmoreRef}
+                id="read-more"
+                name="read-more"
+                type="checkbox"
+              />
+              <label className="text-xl mx-1" htmlFor="read-more">
+                Add Read More Button
+              </label>
+            </div>
+            {hasReadmore ? (
+              <>
+                <input
+                  required
+                  value={readmoreLink}
+                  onChange={(e) => {
+                    setReadmoreLink(e.target.value);
+                  }}
+                  type="text"
+                  placeholder="Enter the external link here"
+                  className="pl-3 pr-28 py-3 mt-1 my-2
+                  text-lg block w-full border border-gray-400 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300"
+                />
+                <input
+                  value={readmoreLabel}
+                  onChange={(e) => {
+                    setReadmoreLabel(e.target.value);
+                  }}
+                  className="pl-3 pr-28 py-3 mt-1 my-2 text-lg block w-full border border-gray-400 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300"
+                  type="text"
+                  placeholder="Optional: The button Label"
+                />
+              </>
+            ) : null}
+            <details className="px-4 m-1">
+              <summary className="text-gray-600">What is this? </summary>
+              <div className="text-start">
+                At the end of the image slide, do you want an external link that
+                takes the user outside the application? (maybe to learn more
+                about what you're showing). Then tick the checkbox.
+                <br />
+                <strong>NOTE:</strong> THIS OPTION CANNOT BE CHANGE IF YOU
+                UPDATE THE GALLERY IN FUTURE
+              </div>
+            </details>
           </div>
           <div className={"pt-4 flex justify-end gap-4"}>
             <button

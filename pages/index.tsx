@@ -58,7 +58,9 @@ const Home = ({totalGalleriesCreated}: {totalGalleriesCreated: number}) => {
             <span className="font-normal">{totalGalleriesCreated}</span>
           </p>
           <h2 className="text-md sm:text-xl mx-4">
-            Upload Images To Your Gallery. Max per time (5)
+            Upload Images To Your Gallery.
+            <br />
+            Max per time (5). Min per time (2)
           </h2>
           <div className="flex flex-wrap items-center justify-around max-w-4xl my-8 sm:w-full bg-white rounded-md shadow-xl h-full border border-gray-100">
             <GalleryCreateForm />
