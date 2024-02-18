@@ -18,7 +18,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
             let values = (await kv.hgetall(`${id}:${ENVI}`)) as {
               files: { url: string; created_at: number }[];
-              password: string;
+                password: string;
+                frameRatio?: "1.9:1" | "1:1";
               readmore?: {
                 link: string;
                 label: string;
@@ -78,6 +79,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     <meta name= "fc:frame:button:3:action" content="link" >
                     <meta name= "fc:frame:button:3:target" content="${values?.readmore?.link}" >
                     ` : ""}
+            ${values?.frameRatio ?
+                `<meta name="fc:frame:image:aspect_ratio" content="${values.frameRatio}">`
+                : ""}
 
         </head>
         <body>

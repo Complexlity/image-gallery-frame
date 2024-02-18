@@ -12,6 +12,7 @@ type PostBody = {
     created_at: number;
   }[];
   password: string;
+  frameRatio: "1.9:1" | "1:1"
   readmore?: {
     link: string,
     label: "Read More" | string & {}
@@ -47,6 +48,7 @@ export default async function handler(
       let preValues = (await kv.hgetall(kvId)) as {
         files: { url: string; created_at: number }[];
         password: string;
+        frameRatio?: "1.9:1" | "1:1"
         readmore?: {
           link: string;
           label: string;
@@ -71,14 +73,16 @@ export default async function handler(
           await kv.hset(kvId, {
             files: newValues,
             password,
-            readmore: preValues.readmore
+            readmore: preValues.readmore,
+            frameRatio: preValues.frameRatio ?? '1.9:1'
           })
         }
         else {
           await kv.hset(kvId, {
             files: newValues,
             password,
-          })
+            frameRatio: preValues.frameRatio ?? "1.9:1",
+          });
         }
 
       } else {
@@ -86,13 +90,15 @@ export default async function handler(
           await kv.hset(kvId, {
             files: parsedValues.filesToSendToKVStore,
             password: parsedValues.password,
-            readmore: parsedValues.readmore
+            readmore: parsedValues.readmore,
+            frameRatio: parsedValues.frameRatio ?? "1.9:1"
           });
         }
         else {
           await kv.hset(kvId, {
             files: parsedValues.filesToSendToKVStore,
             password: parsedValues.password,
+            frameRatio: parsedValues.frameRatio ?? "1.9:1",
           });
         }
         const zddId = `gallery_by_date:${ENVI}`;

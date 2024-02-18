@@ -29,6 +29,7 @@ export function GalleryCreateForm() {
   const [readmoreLabel, setReadmoreLabel] = useState('')
   const [readmoreLink, setReadmoreLink] = useState('')
   const [hasReadmore, setHasReadmore] = useState(false)
+  const [frameRatio, setFrameRatio] = useState<"1.9:1" | "1:1">('1.9:1')
 
   const { startUpload } = useUploadThing("imageUploader", {
     onClientUploadComplete: () => {},
@@ -117,10 +118,12 @@ export function GalleryCreateForm() {
           galleryId,
           filesToSendToKVStore,
           password,
+          frameRatio,
           readmore: {
             label: usedReadMoreLabel,
             link: readmoreLink
-          }
+          },
+
       }
       }
      else {
@@ -128,6 +131,7 @@ export function GalleryCreateForm() {
          galleryId,
          filesToSendToKVStore,
          password,
+         frameRatio
        };
      }
       try {
@@ -206,7 +210,7 @@ export function GalleryCreateForm() {
     return exactSize;
   }
 
-
+console.log({frameRatio})
 
   return (
     <>
@@ -217,35 +221,37 @@ export function GalleryCreateForm() {
       )}
       <div className="mx-8 w-full">
         <form className="relative my-8 space-y-4" onSubmit={handleSubmit}>
-          <input
-            name="image_id"
-            id="image_id"
-            placeholder="Id of existing or new gallery (optional)"
-            className="pl-3 pr-28 py-3 mt-1 text-lg block w-full border border-gray-400 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300"
-            value={imageId}
-            onChange={(e) => {
-              setImageId(e.target.value);
-            }}
-          />
-          <details className="text-start pl-3 pr-28 mt-1">
-            <summary className="text-gray-600">When to put an id?</summary>
-            <ul>
-              <li>
-                1. If you want to have something personalized like
-                "complexlity", "based"
-              </li>
-              <li>
-                2. It can be risky if you use common words (someone may have
-                already picked it)
-              </li>
-              <li>
-                3. You can add more images to your gallery by supplying the same
-                id used in creation. <br />
-                <strong>NOTE:</strong> If you don't want others to add their
-                images to the gallery, put a password on initial creation.
-              </li>
-            </ul>
-          </details>
+          <div>
+            <input
+              name="image_id"
+              id="image_id"
+              placeholder="Id of existing or new gallery (optional)"
+              className="pl-3 pr-28 py-3 mt-1 text-lg block w-full border border-gray-400 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300"
+              value={imageId}
+              onChange={(e) => {
+                setImageId(e.target.value);
+              }}
+            />
+            <details className="text-start pl-3 pr-28 mt-1">
+              <summary className="text-gray-600">When to put an id?</summary>
+              <ul>
+                <li>
+                  1. If you want to have something personalized like
+                  "complexlity", "based"
+                </li>
+                <li>
+                  2. It can be risky if you use common words (someone may have
+                  already picked it)
+                </li>
+                <li>
+                  3. You can add more images to your gallery by supplying the
+                  same id used in creation. <br />
+                  <strong>NOTE:</strong> If you don't want others to add their
+                  images to the gallery, put a password on initial creation.
+                </li>
+              </ul>
+            </details>
+          </div>
           <div>
             <input
               name="password"
@@ -269,6 +275,36 @@ export function GalleryCreateForm() {
                 <li>
                   2. Use something you can remember. If you forget it, you can
                   no longer add more images to it
+                </li>
+              </ul>
+            </details>
+          </div>
+          <div>
+            <select className="pl-3 pr-28 py-3 mt-1 text-lg block w-full border border-gray-400 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300"
+              onChange={(e) => {
+                const value = e.target.value
+                if(!value || !(value == "1.9:1" || value == "1:1")) return
+              setFrameRatio(value)
+            }}
+            >
+              <option value="" selected disabled>Change Frame Ratio</option>
+              <option value="1.9:1">1.9:1(default)</option>
+              <option value="1:1">1.1</option>
+            </select>
+
+            <details className="text-start pl-3 pr-28 mt-1">
+              <summary className="text-gray-600">
+                What is this?
+              </summary>
+              <ul>
+                <li>
+                  It represents the frame image aspect ratio
+                </li>
+                <li>
+                  By default, it is 1.9:1 but there's newly added support for 1:1 (square frames)
+                </li>
+                <li>
+                  Change it to 1:1 if you want you frame images to be a square
                 </li>
               </ul>
             </details>
