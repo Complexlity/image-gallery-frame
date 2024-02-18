@@ -36,7 +36,7 @@ const Home = ({totalGalleriesCreated}: {totalGalleriesCreated: number}) => {
           .
         </span>
         <span>
-          View source on{" "}
+          Star on{" "}
           <a
             href="https://github.com/Complexlity/image-gallery-frame"
             className="underline hover:no-underline text-purple-900"
