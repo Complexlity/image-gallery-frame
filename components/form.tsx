@@ -4,6 +4,7 @@ import clsx from "clsx";
 import { customAlphabet } from "nanoid";
 import { useEffect, useRef, useState } from "react";
 import { useUploadThing } from "../utils/uploadthing";
+import slugify from "slugify";
 
 const HOST = process.env.NEXT_PUBLIC_HOST;
 
@@ -104,8 +105,12 @@ export function GalleryCreateForm() {
       const filesToSendToKVStore = filesUploaded.map((file, index) => {
         return { url: file.url, created_at: Date.now() + index };
       });
+      const sluggifiedId = slugify(imageId, {
+        replacement: "-",
+        trim: true,
+      })
 
-      const galleryId = imageId || nanoid();
+      const galleryId = sluggifiedId || nanoid();
       let payload
       if (hasReadmore) {
         payload = {
