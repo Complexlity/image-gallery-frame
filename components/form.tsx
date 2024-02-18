@@ -392,7 +392,7 @@ console.log({frameRatio})
                   }}
                   className="pl-3 pr-28 py-3 mt-1 my-2 text-lg block w-full border border-gray-400 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300"
                   type="text"
-                  placeholder="Optional: The button Label"
+                  placeholder="Button label (optional. Defaults to 'Read More'"
                 />
               </>
             ) : null}
