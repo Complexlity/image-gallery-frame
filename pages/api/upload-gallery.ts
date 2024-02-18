@@ -46,7 +46,6 @@ export default async function handler(
     else
       parsedValues.galleryId = slugify(parsedValues.galleryId, {
         replacement: "-",
-        lower: true,
         trim: true,
       });
 
