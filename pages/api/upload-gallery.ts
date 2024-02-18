@@ -36,8 +36,6 @@ export default async function handler(
     values = JSON.parse(values);
     //TODO: Use zod
     const parsedValues = values as unknown as PostBody;
-    console.log("Before check");
-    console.log({ parsedValues });
     if (parsedValues.filesToSendToKVStore.length == 0) {
       return res.status(500).json({ error: "Invalid Files", success: false });
     }

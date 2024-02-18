@@ -4,16 +4,11 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 
 const ENVI = process.env.ENVI ?? 'devv'
-// const READ_MORE_LINK = null
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'POST') {
-        console.log({requestBody: req.body})
         try {
-
-
             let buttonId = req.body.untrustedData.buttonIndex || 2
-            console.log({ buttonId })
             let idNext = req.query.id as unknown as string
             let id = idNext.slice(0, idNext.length - 1)
 
