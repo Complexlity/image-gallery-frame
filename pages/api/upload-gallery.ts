@@ -12,14 +12,12 @@ type PostBody = {
     created_at: number;
   }[];
   password: string;
-  frameRatio: "1.9:1" | "1:1"
+  frameRatio: "1.91:1" | "1:1";
   readmore?: {
-    link: string,
-    label: "Read More" | string & {}
-  }
+    link: string;
+    label: "Read More" | (string & {});
+  };
 };
-
-
 
 type ResponseData =
   | { success: true; data: Record<string, unknown> }
@@ -48,7 +46,7 @@ export default async function handler(
       let preValues = (await kv.hgetall(kvId)) as {
         files: { url: string; created_at: number }[];
         password: string;
-        frameRatio?: "1.9:1" | "1:1"
+        frameRatio?: "1.91:1" | "1:1";
         readmore?: {
           link: string;
           label: string;
@@ -74,31 +72,28 @@ export default async function handler(
             files: newValues,
             password,
             readmore: preValues.readmore,
-            frameRatio: preValues.frameRatio ?? '1.9:1'
-          })
-        }
-        else {
+            frameRatio: preValues.frameRatio ?? "1.91:1",
+          });
+        } else {
           await kv.hset(kvId, {
             files: newValues,
             password,
-            frameRatio: preValues.frameRatio ?? "1.9:1",
+            frameRatio: preValues.frameRatio ?? "1.91:1",
           });
         }
-
       } else {
         if (parsedValues.readmore) {
           await kv.hset(kvId, {
             files: parsedValues.filesToSendToKVStore,
             password: parsedValues.password,
             readmore: parsedValues.readmore,
-            frameRatio: parsedValues.frameRatio ?? "1.9:1"
+            frameRatio: parsedValues.frameRatio ?? "1.91:1",
           });
-        }
-        else {
+        } else {
           await kv.hset(kvId, {
             files: parsedValues.filesToSendToKVStore,
             password: parsedValues.password,
-            frameRatio: parsedValues.frameRatio ?? "1.9:1",
+            frameRatio: parsedValues.frameRatio ?? "1.91:1",
           });
         }
         const zddId = `gallery_by_date:${ENVI}`;

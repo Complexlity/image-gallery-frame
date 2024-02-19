@@ -26,10 +26,10 @@ export function GalleryCreateForm() {
   const [sortingType, setSortingType] = useState("");
   const [sortingMethod, setSortingMethod] = useState("asc");
   const readmoreRef = useRef<HTMLInputElement | null>(null);
-  const [readmoreLabel, setReadmoreLabel] = useState('')
-  const [readmoreLink, setReadmoreLink] = useState('')
-  const [hasReadmore, setHasReadmore] = useState(false)
-  const [frameRatio, setFrameRatio] = useState<"1.9:1" | "1:1">('1.9:1')
+  const [readmoreLabel, setReadmoreLabel] = useState("");
+  const [readmoreLink, setReadmoreLink] = useState("");
+  const [hasReadmore, setHasReadmore] = useState(false);
+  const [frameRatio, setFrameRatio] = useState<"1.91:1" | "1:1">("1.91:1");
 
   const { startUpload } = useUploadThing("imageUploader", {
     onClientUploadComplete: () => {},
@@ -64,7 +64,7 @@ export function GalleryCreateForm() {
 
   async function handleSubmit(event: any) {
     setError("");
-    let usedReadMoreLabel = readmoreLabel
+    let usedReadMoreLabel = readmoreLabel;
 
     event.preventDefault();
     if (displayedFileList.length === 0) {
@@ -77,12 +77,13 @@ export function GalleryCreateForm() {
       return;
     }
 
-
     if (hasReadmore && !readmoreLink) {
-      setError("Enter an external link or uncheck the \"Add read more\" checkbox")
-      return
+      setError(
+        'Enter an external link or uncheck the "Add read more" checkbox'
+      );
+      return;
     }
-    if(hasReadmore && !usedReadMoreLabel) usedReadMoreLabel = 'Read More'
+    if (hasReadmore && !usedReadMoreLabel) usedReadMoreLabel = "Read More";
     setIsLoading(true);
     setLoadingMessage("Uploading Images...");
 
@@ -109,10 +110,10 @@ export function GalleryCreateForm() {
       const sluggifiedId = slugify(imageId, {
         replacement: "-",
         trim: true,
-      })
+      });
 
       const galleryId = sluggifiedId || nanoid();
-      let payload
+      let payload;
       if (hasReadmore) {
         payload = {
           galleryId,
@@ -121,19 +122,17 @@ export function GalleryCreateForm() {
           frameRatio,
           readmore: {
             label: usedReadMoreLabel,
-            link: readmoreLink
+            link: readmoreLink,
           },
-
+        };
+      } else {
+        payload = {
+          galleryId,
+          filesToSendToKVStore,
+          password,
+          frameRatio,
+        };
       }
-      }
-     else {
-       payload = {
-         galleryId,
-         filesToSendToKVStore,
-         password,
-         frameRatio
-       };
-     }
       try {
         const res = await fetch("api/upload-gallery", {
           method: "POST",
@@ -210,7 +209,7 @@ export function GalleryCreateForm() {
     return exactSize;
   }
 
-console.log({frameRatio})
+  console.log({ frameRatio });
 
   return (
     <>
@@ -280,28 +279,28 @@ console.log({frameRatio})
             </details>
           </div>
           <div>
-            <select className="pl-3 pr-28 py-3 mt-1 text-lg block w-full border border-gray-400 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300"
+            <select
+              className="pl-3 pr-28 py-3 mt-1 text-lg block w-full border border-gray-400 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300"
               onChange={(e) => {
-                const value = e.target.value
-                if(!value || !(value == "1.9:1" || value == "1:1")) return
-              setFrameRatio(value)
-            }}
+                const value = e.target.value;
+                if (!value || !(value == "1.91:1" || value == "1:1")) return;
+                setFrameRatio(value);
+              }}
             >
-              <option value="" selected disabled>Change Frame Ratio</option>
-              <option value="1.9:1">1.9:1(default)</option>
+              <option value="" selected disabled>
+                Change Frame Ratio
+              </option>
+              <option value="1.91:1">1.91:1(default)</option>
               <option value="1:1">1.1</option>
             </select>
 
             <details className="text-start pl-3 pr-28 mt-1">
-              <summary className="text-gray-600">
-                What is this?
-              </summary>
+              <summary className="text-gray-600">What is this?</summary>
               <ul>
+                <li>It represents the frame image aspect ratio</li>
                 <li>
-                  It represents the frame image aspect ratio
-                </li>
-                <li>
-                  By default, it is 1.9:1 but there's newly added support for 1:1 (square frames)
+                  By default, it is 1.91:1 but there's newly added support for
+                  1:1 (square frames)
                 </li>
                 <li>
                   Change it to 1:1 if you want you frame images to be a square

@@ -12,8 +12,8 @@ const ENVI = process.env.ENVI ?? "devv";
 
 async function getImageData(id: string, itemNumber = 0) {
   let values = (await kv.hgetall(`${id}:${ENVI}`)) as {
-    files: { url: string }[],
-    frameRatio?: "1.9:1" | "1:1";
+    files: { url: string }[];
+    frameRatio?: "1.91:1" | "1:1";
   };
   let returnedItems: { url: string }[];
   if (!values) returnedItems = [];
@@ -23,7 +23,11 @@ async function getImageData(id: string, itemNumber = 0) {
     created_at: number;
   };
 
-  return { image: returnedItem?.url ?? "", next: itemNumber + 1, frameRatio: values.frameRatio ?? "1.9:1" };
+  return {
+    image: returnedItem?.url ?? "",
+    next: itemNumber + 1,
+    frameRatio: values.frameRatio ?? "1.91:1",
+  };
 }
 
 export async function generateMetadata(
@@ -40,8 +44,7 @@ export async function generateMetadata(
     "fc:frame:image": `${imageData.image}`,
     "fc:frame:button:1": "Prev",
     "fc:frame:button:2": "Next",
-    "fc:frame:image:aspect_ratio": imageData.frameRatio
-
+    "fc:frame:image:aspect_ratio": imageData.frameRatio,
   };
 
   return {
