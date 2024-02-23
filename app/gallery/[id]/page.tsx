@@ -1,5 +1,6 @@
 import { kv } from "@vercel/kv";
 import { Metadata, ResolvingMetadata } from "next";
+import Link from "next/link";
 
 // Opt out of caching for all data requests in the route segment
 export const dynamic = "force-dynamic";
@@ -64,7 +65,11 @@ export default function Page({ params }: { params: { id: string } }) {
   const id = params.id;
   return (
     <>
-      <div></div>
+      <Link href="/">
+        <button className="m-4 bg-green-500 px-2 py-2 rounded-md hover:bg-green-300 flex items-center gap-1">
+          {"< "}Create New Gallery
+        </button>
+      </Link>
     </>
   );
 }
