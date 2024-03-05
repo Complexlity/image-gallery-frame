@@ -40,7 +40,11 @@ export default async function handler(
     }
 
     if (!parsedValues.galleryId) parsedValues.galleryId = nanoid();
-    else parsedValues.galleryId = slugify(parsedValues.galleryId)
+    else parsedValues.galleryId = slugify(parsedValues.galleryId, {
+      replacement: '-',
+      trim: true,
+      lower: true,
+    })
 
 
     let kvId = `${parsedValues.galleryId}:${ENVI}`;
