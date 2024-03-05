@@ -39,17 +39,7 @@ export default async function handler(
       return res.status(500).json({ error: "Invalid Files", success: false });
     }
 
-    if (!parsedValues.galleryId) {
-      parsedValues.galleryId = nanoid();
-    }
-    else {
-      parsedValues.galleryId = slugify(parsedValues.galleryId, {
-        replacement: '-',
-        trim: true,
-        lower: true,
-      })
-    }
-
+    if (!parsedValues.galleryId) parsedValues.galleryId = nanoid();
 
     let kvId = `${parsedValues.galleryId}:${ENVI}`;
     try {
