@@ -1,3 +1,4 @@
+import { ENVI } from "@/utils/constants";
 import { kv } from "@vercel/kv";
 import { Metadata, ResolvingMetadata } from "next";
 import { headers } from "next/headers";
@@ -11,7 +12,6 @@ type Props = {
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
-const ENVI = process.env.ENVI ?? "devv";
 
 async function getImageData(id: string, itemNumber = 0) {
   let values = (await kv.hgetall(`${id}:${ENVI}`)) as {

@@ -2,9 +2,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { kv } from "@vercel/kv";
 import { customAlphabet } from "nanoid";
 import slugify from "slugify";
-import { GALLERY_KV_KEY } from "@/utils/constants";
+import { ENVI, GALLERY_KV_KEY } from "@/utils/constants";
 
-const ENVI = process.env.ENVI ?? "devv";
 
 type PostBody = {
   galleryId: string;
@@ -34,6 +33,10 @@ export default async function handler(
     let values = req.body;
 
     values = JSON.parse(values);
+    console.log({
+      values
+    })
+
     //TODO: Use zod
     const parsedValues = values as unknown as PostBody;
     if (parsedValues.filesToSendToKVStore.length == 0) {
@@ -43,6 +46,7 @@ export default async function handler(
     if (!parsedValues.galleryId) parsedValues.galleryId = nanoid();
 
     let kvId = `${parsedValues.galleryId}:${ENVI}`;
+    console.log({ kvId });
     try {
       let preValues = (await kv.hgetall(kvId)) as {
         files: { url: string; created_at: number }[];
@@ -96,8 +100,10 @@ export default async function handler(
             password: parsedValues.password,
             frameRatio: parsedValues.frameRatio ?? "1.91:1",
           });
+          
         }
         const zddId = `${GALLERY_KV_KEY}:${ENVI}`;
+        console.log({zddId})
         await kv.zadd(zddId, {
           score: Number(parsedValues.filesToSendToKVStore[0].created_at),
           member: parsedValues.galleryId,

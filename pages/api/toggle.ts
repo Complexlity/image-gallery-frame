@@ -1,8 +1,7 @@
 
+import { ENVI } from "@/utils/constants";
 import { kv } from "@vercel/kv";
 import type { NextApiRequest, NextApiResponse } from "next";
-
-const ENVI = process.env.ENVI ?? "devv";
 
 export default async function handler(
   req: NextApiRequest,

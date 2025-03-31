@@ -5,14 +5,14 @@ import { kv } from "@vercel/kv";
 import { CreateGalleryForm } from "@/components/create-gallery-form";
 
 
-import { GALLERY_KV_KEY } from "@/utils/constants";
+import { ENVI, GALLERY_KV_KEY } from "@/utils/constants";
 import React from 'react';
-const ENVI = process.env.ENVI ?? 'devv'
 
 
 export async function getServerSideProps() {
+  console.log({ENVI})
   const key = `${GALLERY_KV_KEY}:${ENVI}:score`
-  const totalGalleriesCreated = await kv.get(`gallery_by_date:${ENVI}:score`)
+  const totalGalleriesCreated = await kv.get(`${GALLERY_KV_KEY}:${ENVI}:score`)
   return {props: {totalGalleriesCreated}}
 }
 

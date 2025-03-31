@@ -12,6 +12,7 @@ import Link from "next/link";
 
 import { ImagePlus, List, Loader2, Upload, X } from 'lucide-react';
 import { HOST } from "@/utils/constants";
+import { revalidatePath } from "next/cache";
 
 export function CreateGalleryForm() {
   const nanoid = customAlphabet("0123456789abcdefghijklmnopqrstuvwxyz", 7);
@@ -196,7 +197,9 @@ export function CreateGalleryForm() {
         setImageId("");
         setPassword("");
         setIsLoading(false);
+        revalidatePath("/gallery")
         router.push(`/share/${galleryId}`);
+        
 
       } catch (error) {
         console.log({ error });
