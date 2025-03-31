@@ -584,10 +584,6 @@ export function CreateGalleryForm() {
         usedHasReadMore = false;
     }
 
-    // const finalGalleryId = galleryId ? 
-    //   slugify(galleryId, { replacement: "-", trim: true }) : 
-    //   nanoid();
-
     if (hasReadMore && !usedReadMoreLabel) usedReadMoreLabel = "Read More";
     setIsLoading(true);
     setLoadingMessage("Uploading Images...");
@@ -595,7 +591,7 @@ export function CreateGalleryForm() {
     let filesUploaded;
 
     try {
-      const fileUploadResponse = await startUpload(displayedFileList).catch(
+      const fileUploadResponse = await startUpload(displayedImages).catch(
         (err) => {
           console.log({ err });
         }
@@ -639,15 +635,15 @@ export function CreateGalleryForm() {
           frameRatio,
         };
       }
-
       try {
-        const res = {
-          json: async () => ({ success: true }),
-        };
+        const res = await fetch("api/upload-gallery", {
+          method: "POST",
+          body: JSON.stringify(payload),
+        });
 
         const result = await res.json();
         if (!result.success) {
-          throw new Error("Mocked error");
+          throw new Error(result.error);
         }
         setError("");
         setWarpcastUrl(`${HOST}/gallery/${galleryId}`);
