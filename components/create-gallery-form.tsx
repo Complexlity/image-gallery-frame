@@ -11,9 +11,8 @@ import Link from "next/link";
 
 
 import { ImagePlus, List, Loader2, Upload, X } from 'lucide-react';
+import { HOST } from "@/utils/constants";
 
-
-const HOST = process.env.NEXT_PUBLIC_HOST;
 
 export function GalleryCreateForm() {
   const nanoid = customAlphabet("0123456789abcdefghijklmnopqrstuvwxyz", 7);

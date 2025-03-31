@@ -1,4 +1,4 @@
-import { WARPCAST_FRAME_URL } from '@/utils/constants';
+import {  HOST, WARPCAST_FRAME_URL } from '@/utils/constants';
 import { ChevronLeft, Copy, ExternalLink, Link2, List } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -12,8 +12,7 @@ export default function Share() {
     
   useEffect(() => {
     // In a real app, this would be your actual host
-    const host = window.location.origin;
-    setWarpcastUrl(`${WARPCAST_FRAME_URL}${encodeURIComponent(`${host}/share/${id}`)}`);
+    setWarpcastUrl(`${WARPCAST_FRAME_URL}${encodeURIComponent(`${HOST}/share/${id}`)}`);
   }, [id]);
 
   const handleCopy = () => {
