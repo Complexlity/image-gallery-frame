@@ -1,6 +1,8 @@
 import { kv } from "@vercel/kv";
 import { Metadata, ResolvingMetadata } from "next";
+import { headers } from "next/headers";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 // Opt out of caching for all data requests in the route segment
 export const dynamic = "force-dynamic";
@@ -27,7 +29,7 @@ async function getImageData(id: string, itemNumber = 0) {
   return {
     image: returnedItem?.url ?? "",
     next: itemNumber + 1,
-    frameRatio: values.frameRatio ?? "1.91:1",
+    frameRatio: values?.frameRatio ?? "1.91:1",
   };
 }
 
@@ -71,16 +73,36 @@ export async function generateMetadata(
 }
 
 
-
 export default function Page({ params }: { params: { id: string } }) {
   const id = params.id;
+function isBrowser(userAgent: string | null): boolean {
+  if (!userAgent) return false
+
+  // Common browser identifiers
+  const browserIdentifiers = ["Mozilla", "Chrome", "Safari", "Firefox", "Edge", "Opera"]
+
+  // Check if it's likely a browser
+  const containsBrowserIdentifier = browserIdentifiers.some((id) => userAgent.includes(id))
+
+  // Consider it a browser if it contains browser identifiers but not bot identifiers
+  return containsBrowserIdentifier 
+}
+
+  // const headersList = headers()
+  // const userAgent = headersList.get("user-agent")
+
+  // // Redirect browser users to another page
+  // if (isBrowser(userAgent)) {
+  //   // You can redirect to any URL you want
+  //   redirect(`/`)
+  // }
+
+
+
   return (
     <>
-      <Link href="/">
-        <button className="m-4 bg-green-500 px-2 py-2 rounded-md hover:bg-green-300 flex items-center gap-1">
-          {"< "}Create New Gallery
-        </button>
-      </Link>
+      <div>
+      </div>
     </>
   );
 }

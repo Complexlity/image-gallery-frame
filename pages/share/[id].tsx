@@ -22,7 +22,7 @@ export default function Share() {
   };
 
     return (
-      <div className="min-h-screen bg-gray-900 text-gray-100">
+      
     <div className="container mx-auto px-4 py-8 ">
       <div className="max-w-4xl mx-auto">
         {/* <div className="text-center mb-12">
@@ -87,7 +87,6 @@ export default function Share() {
           </div>
         </div>
       </div>
-            </div>
             </div>
   );
 }
