@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { kv } from "@vercel/kv";
 import { customAlphabet } from "nanoid";
 import slugify from "slugify";
+import { GALLERY_KV_KEY } from "@/utils/constants";
 
 const ENVI = process.env.ENVI ?? "devv";
 
@@ -96,7 +97,7 @@ export default async function handler(
             frameRatio: parsedValues.frameRatio ?? "1.91:1",
           });
         }
-        const zddId = `gallery_by_date:${ENVI}`;
+        const zddId = `${GALLERY_KV_KEY}:${ENVI}`;
         await kv.zadd(zddId, {
           score: Number(parsedValues.filesToSendToKVStore[0].created_at),
           member: parsedValues.galleryId,

@@ -1,14 +1,17 @@
-import { type NextPage } from "next";
 import Head from "next/head";
 
-import { GalleryCreateForm } from "../components/form";
-import Link from "next/link";
 import { kv } from "@vercel/kv";
 
+import { Gallery, GalleryCreateForm } from "@/components/form";
+
+
+import React from 'react';
+import { GALLERY_KV_KEY } from "@/utils/constants";
 const ENVI = process.env.ENVI ?? 'devv'
 
 
-export async function getServerSideProps(){
+export async function getServerSideProps() {
+  const key = `${GALLERY_KV_KEY}:${ENVI}:score`
   const totalGalleriesCreated = await kv.get(`gallery_by_date:${ENVI}:score`)
   return {props: {totalGalleriesCreated}}
 }
@@ -24,7 +27,10 @@ const Home = ({totalGalleriesCreated}: {totalGalleriesCreated: number}) => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="text-center text-md p-4 absolute top-0 left-0 right-0 flex gap-2 content-center justify-center">
+      <div className="min-h-screen bg-gray-900 text-gray-100">
+      <Gallery />
+      </div>
+      {/* <div className="text-center text-md p-4 absolute top-0 left-0 right-0 flex gap-2 content-center justify-center">
         <span>
           Built by{" "}
           <a
@@ -71,7 +77,7 @@ const Home = ({totalGalleriesCreated}: {totalGalleriesCreated: number}) => {
             </button>
           </Link>
         </main>
-      </div>
+      </div> */}
     </>
   );
 };
@@ -96,6 +102,7 @@ function VercelLogo(props: React.SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
+
 
 
 export default Home;
