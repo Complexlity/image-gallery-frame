@@ -49,7 +49,6 @@ export function Galleries({galleryIdsWithTimestamp}: {galleryIdsWithTimestamp: s
   };
 
   const getWarpcastUrl = (id: string) => {
-    const host = window.location.origin;
     return `${WARPCAST_FRAME_URL}${encodeURIComponent(`${host}/gallery/${id}`)}`;
   };
 

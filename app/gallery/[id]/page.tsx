@@ -16,7 +16,6 @@ async function getImageData(id: string, itemNumber = 0) {
     files: { url: string }[];
     frameRatio?: "1.91:1" | "1:1";
   };
-  console.log({values})
   let returnedItems: { url: string }[];
   if (!values) returnedItems = [];
   else returnedItems = values.files;
