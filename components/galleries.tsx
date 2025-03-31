@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { ImagePlus, Copy, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
-import { WARPCAST_FRAME_URL } from '@/utils/constants';
+import { HOST, WARPCAST_FRAME_URL } from '@/utils/constants';
 import { CopyButton } from './copy-button';
 
 // Mock data matching the KV store format
@@ -24,7 +24,7 @@ interface Gallery {
 
 
 
-export function Galleries({galleryIdsWithTimestamp}: {galleryIdsWithTimestamp: string[]}) {
+export function Galleries({ galleryIdsWithTimestamp }: { galleryIdsWithTimestamp: string[] }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   
@@ -40,7 +40,9 @@ export function Galleries({galleryIdsWithTimestamp}: {galleryIdsWithTimestamp: s
   const totalPages = Math.ceil(galleries.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const displayedGalleries = galleries.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-  const host = process.env.HOST || 'http://localhost:3000';
+  const host = process.env.HOST || process.env.NEXT_PUBLIC_HOST || 'http://localhost:3000';
+  console.log({HOST})
+  console.log({host})
 
   const handleCopy = (id: string) => {
     navigator.clipboard.writeText(id);
