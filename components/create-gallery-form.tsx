@@ -892,13 +892,14 @@ export function CreateGalleryForm() {
               <button
                 type="button"
                 onClick={clearForm}
-                className={clsx("px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-gray-800", isLoading && "hidden")} 
+                className={clsx("flex gap-2 items-center px-4 py-2 bg-red-400 text-white rounded-lg hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 focus:ring-offset-gray-800", isLoading && "hidden")} 
               >
                 <X className="w-5 h-5" />
+                Clear Form
               </button>
               <button
                 type="submit"
-                className={clsx("flex items-center px-6 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-800", 
+                className={clsx("flex items-center px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 focus:ring-offset-gray-800", 
                   isLoading && "opacity-50 cursor-not-allowed"
                 )}
               >

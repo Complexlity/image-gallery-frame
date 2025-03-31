@@ -31,14 +31,23 @@ export default function Share() {
         </div> */}
 <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-purple-400 mb-4">Frame Gallery</h1>
-          <p className="text-gray-400">Create and share your Web3 gallery experience</p>
+              <p className="text-gray-400">Create and share your Web3 gallery experience</p>
+              <div className="flex justify-center gap-4 items-center">
           <Link 
             href="/" 
             className="inline-flex items-center  mt-4 text-purple-400 hover:text-purple-300 hover:underline"
           >
             <ChevronLeft className="w-4 h-4 mr-2 flex" />
             Create Gallery
-          </Link>
+              </Link>
+              <Link 
+            href="/gallery" 
+            className="inline-flex items-center mt-4 text-purple-400 hover:text-purple-300 hover:underline"
+          >
+            <List className="w-4 h-4 mr-2" />
+            View All Galleries
+                </Link>
+                </div>
         </div>
                     
         <div className="bg-gray-800 rounded-xl border border-gray-700 p-8 space-y-6">
