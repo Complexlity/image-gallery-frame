@@ -2,7 +2,7 @@ import Head from "next/head";
 
 import { kv } from "@vercel/kv";
 
-import { Gallery, GalleryCreateForm } from "@/components/form";
+import { CreateGalleryForm, GalleryCreateForm } from "@/components/create-gallery-form";
 
 
 import React from 'react';
@@ -28,7 +28,7 @@ const Home = ({totalGalleriesCreated}: {totalGalleriesCreated: number}) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="min-h-screen bg-gray-900 text-gray-100">
-      <Gallery />
+      <CreateGalleryForm />
       </div>
       {/* <div className="text-center text-md p-4 absolute top-0 left-0 right-0 flex gap-2 content-center justify-center">
         <span>

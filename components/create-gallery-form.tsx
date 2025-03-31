@@ -467,7 +467,7 @@ export function GalleryCreateForm() {
 }
 
 
-export function Gallery() {
+export function CreateGalleryForm() {
   const nanoid = customAlphabet("0123456789abcdefghijklmnopqrstuvwxyz", 7);
   const [images, setImages] = useState<File[]>([]);
   const [displayedImages, setDisplayedImages] = useState<File[]>([]);
@@ -480,8 +480,8 @@ export function Gallery() {
   const [hasReadMore, setHasReadMore] = useState(false);
   const [readMoreLink, setReadMoreLink] = useState("");
   const [readMoreLabel, setReadMoreLabel] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
-  const [loadingMessage, setLoadingMessage] = useState('Uploading Images')
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState('')
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [displayedFileList, setDisplayedFileList] = useState<File[]>([]);
   const [imageId, setImageId] = useState("");
