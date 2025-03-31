@@ -591,7 +591,6 @@ export function CreateGalleryForm() {
     if (hasReadMore && !usedReadMoreLabel) usedReadMoreLabel = "Read More";
     setIsLoading(true);
     setLoadingMessage("Uploading Images...");
-    return
 
     let filesUploaded;
 
