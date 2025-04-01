@@ -245,8 +245,8 @@ export function CreateGalleryForm() {
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-purple-400 mb-4">Frame Gallery</h1>
-          <p className="text-gray-400">Create and share your Web3 gallery experience</p>
+          <h1 className="text-4xl font-bold text-gray-100">Convert your images into Farcaster Gallery</h1>
+          {/* <p className="text-gray-400">Create and share your Web3 gallery experience</p> */}
           <Link 
             href="/gallery" 
             className="inline-flex items-center mt-4 text-purple-400 hover:text-purple-300"

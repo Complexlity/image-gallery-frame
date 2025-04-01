@@ -75,8 +75,8 @@ export function Galleries({
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-purple-400 mb-4">Explore Galleries</h1>
-          <p className="text-gray-400">Discover and share amazing Web3 galleries</p>
+          <h1 className="text-4xl font-bold text-gray-100 mb-2">Explore Created Galleries</h1>
+          {/* <p className="text-gray-400">Discover and share amazing Web3 galleries</p> */}
           <Link href="/" className="inline-flex items-center mt-4 text-purple-400 hover:text-purple-300">
             <ImagePlus className="w-4 h-4 mr-2" />
             Create New Gallery
