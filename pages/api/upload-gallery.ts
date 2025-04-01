@@ -45,8 +45,7 @@ export default async function handler(
     if (!parsedValues.galleryId) parsedValues.galleryId = nanoid();
 
     let kvId = `${parsedValues.galleryId}:${ENVI}`;
-    console.log({ kvId });
-    console.log({parsedValues})
+    
     try {
       let preValues = (await kv.hgetall(kvId)) as {
         files: { url: string; created_at: number }[];
@@ -103,7 +102,6 @@ export default async function handler(
           
         }
         const zddId = `${GALLERY_KV_KEY}:${ENVI}`;
-        console.log({zddId})
         await kv.zadd(zddId, {
           score: Number(parsedValues.filesToSendToKVStore[0].created_at),
           member: parsedValues.galleryId,

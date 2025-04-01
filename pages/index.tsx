@@ -10,7 +10,6 @@ import React from 'react';
 
 
 export async function getServerSideProps() {
-  console.log({ENVI})
   const key = `${GALLERY_KV_KEY}:${ENVI}:score`
   const totalGalleriesCreated = await kv.get(`${GALLERY_KV_KEY}:${ENVI}:score`)
   return {props: {totalGalleriesCreated}}
