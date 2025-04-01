@@ -14,7 +14,6 @@ export default async function Page({
   searchParams: { page?: string }
 }) {
   const galleryKey = `${GALLERY_KV_KEY}:${ENVI}`
-  console.log({ galleryKey })
 
   const galleryIds = (await kv.zrange(galleryKey, 0, -1, {
     withScores: true,
