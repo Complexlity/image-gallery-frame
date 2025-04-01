@@ -15,8 +15,9 @@ export function Navbar() {
       <div className="container mx-auto px-4 max-w-2xl sm:max-w-4xl">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center">
-            <span className="text-xl font-bold text-purple-400">Frame Gallery</span>
+          <Link href="/" className="flex items-center gap-2">
+            <img src="/gallery-icon.svg" className="w-8 h-8"/>
+            <span className="text-xl font-bold text-purple-400">Frames Gallery</span>
           </Link>
 
           {/* Navigation */}
