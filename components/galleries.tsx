@@ -29,26 +29,20 @@ export function Galleries({ galleryIdsWithTimestamp }: { galleryIdsWithTimestamp
   const [copiedId, setCopiedId] = useState<string | null>(null);
   
   // Parse the flat array into gallery objects
+  
   const galleries: Gallery[] = [];
-  for (let i = 0; i < galleryIdsWithTimestamp.length; i += 2) {
+  for (let i = galleryIdsWithTimestamp.length - 2; i >= 0; i -= 2) {
     galleries.push({
       id: galleryIdsWithTimestamp[i] as string,
       timestamp: galleryIdsWithTimestamp[i + 1] as unknown as number
     });
   }
-  
   const totalPages = Math.ceil(galleries.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const displayedGalleries = galleries.slice(startIndex, startIndex + ITEMS_PER_PAGE);
   const host = process.env.HOST || process.env.NEXT_PUBLIC_HOST || 'http://localhost:3000';
-  console.log({HOST})
-  console.log({host})
 
-  const handleCopy = (id: string) => {
-    navigator.clipboard.writeText(id);
-    setCopiedId(id);
-    setTimeout(() => setCopiedId(null), 2000);
-  };
+
 
   const getWarpcastUrl = (id: string) => {
     return `${WARPCAST_FRAME_URL}${encodeURIComponent(`${host}/gallery/${id}`)}`;

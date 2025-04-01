@@ -9,10 +9,8 @@ export default async function Page() {
   console.log({galleryKey})
 
   const galleryIds = (await kv.zrange(galleryKey, 0, -1, {
-    rev: true,
     withScores: true
   })) as string[];
- console.log({galleryIds})
   
 
 

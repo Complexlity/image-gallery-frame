@@ -1,8 +1,7 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { ENVI, GALLERY_KV_KEY } from "@/utils/constants";
 import { kv } from "@vercel/kv";
 import { customAlphabet } from "nanoid";
-import slugify from "slugify";
-import { ENVI, GALLERY_KV_KEY } from "@/utils/constants";
+import { NextApiRequest, NextApiResponse } from "next";
 
 
 type PostBody = {
@@ -19,6 +18,8 @@ type PostBody = {
   };
 };
 
+
+
 type ResponseData =
   | { success: true; data: Record<string, unknown> }
   | { success: false; error: string };
@@ -33,9 +34,7 @@ export default async function handler(
     let values = req.body;
 
     values = JSON.parse(values);
-    console.log({
-      values
-    })
+    
 
     //TODO: Use zod
     const parsedValues = values as unknown as PostBody;
@@ -47,6 +46,7 @@ export default async function handler(
 
     let kvId = `${parsedValues.galleryId}:${ENVI}`;
     console.log({ kvId });
+    console.log({parsedValues})
     try {
       let preValues = (await kv.hgetall(kvId)) as {
         files: { url: string; created_at: number }[];
@@ -116,7 +116,7 @@ export default async function handler(
         .status(500)
         .json({ success: false, error: "Error uploading files to store" });
     }
-    return res.status(200).json({ success: true, data: values });
+    return res.status(200).json({ success: true, data: parsedValues });
   } else {
     const galleryId = req.query.galleryId as string;
     const password = req.body.password as string;
