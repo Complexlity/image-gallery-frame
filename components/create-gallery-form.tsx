@@ -14,6 +14,7 @@ import { ImagePlus, List, Loader2, Upload, X } from 'lucide-react';
 import { HOST } from "@/utils/constants";
 import { revalidatePath } from "next/cache";
 
+
 export function CreateGalleryForm() {
   const nanoid = customAlphabet("0123456789abcdefghijklmnopqrstuvwxyz", 7);
   const [images, setImages] = useState<File[]>([]);
@@ -245,7 +246,7 @@ export function CreateGalleryForm() {
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-100">Convert your images into Farcaster Gallery</h1>
+          <h1 className="text-4xl font-bold text-gray-100">Convert images into A Farcaster Frame</h1>
           {/* <p className="text-gray-400">Create and share your Web3 gallery experience</p> */}
           <Link 
             href="/gallery" 
