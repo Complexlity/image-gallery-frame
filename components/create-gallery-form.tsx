@@ -271,13 +271,14 @@ export function CreateGalleryForm() {
                 Gallery ID
                 <div className="group relative">
                   <input
+                    autoComplete="off"
                     type="text"
                     value={galleryId}
                     onChange={(e) => setGalleryId(e.target.value)}
                     placeholder="Enter a custom gallery ID (optional)"
                     className="mt-1 w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   />
-                  <div className="hidden group-hover:block absolute z-10 w-72 p-4 mt-2 bg-gray-800 rounded-lg border border-gray-700 shadow-lg">
+                  <div className="hidden group-focus-within:block absolute z-10 w-72 p-4 mt-2 bg-gray-800 rounded-lg border border-gray-700 shadow-lg">
                     <h4 className="font-semibold text-purple-400 mb-2">When to use a custom ID?</h4>
                     <ul className="text-sm text-gray-300 space-y-2">
                       <li>• For personalized galleries (e.g., "my-collection")</li>
@@ -293,24 +294,26 @@ export function CreateGalleryForm() {
             {/* Password Input */}
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-300">
-                Password Protection
-                <div className="group relative">
+              Password Protection
+              <div className="group relative">
                   <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Set a password (optional)"
-                    className="mt-1 w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                  />
-                  <div className="hidden group-hover:block absolute z-10 w-72 p-4 mt-2 bg-gray-800 rounded-lg border border-gray-700 shadow-lg">
-                    <h4 className="font-semibold text-purple-400 mb-2">Password Protection</h4>
-                    <ul className="text-sm text-gray-300 space-y-2">
-                      <li>• Prevents others from modifying your gallery</li>
-                      <li>• Required for future updates</li>
-                      <li className="text-yellow-400">Important: Save this password! You cannot recover it</li>
-                    </ul>
-                  </div>
+                    autoComplete="off"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Set a password (optional)"
+                className="mt-1 w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                
+                />
+                <div className="hidden group-focus-within:block absolute z-10 w-72 p-4 mt-2 bg-gray-800 rounded-lg border border-gray-700 shadow-lg">
+                <h4 className="font-semibold text-purple-400 mb-2">Password Protection</h4>
+                <ul className="text-sm text-gray-300 space-y-2">
+                  <li>• Prevents others from modifying your gallery</li>
+                  <li>• Required for future updates</li>
+                  <li className="text-yellow-400">Important: Save this password! You cannot recover it</li>
+                </ul>
                 </div>
+              </div>
               </label>
             </div>
 
@@ -327,7 +330,7 @@ export function CreateGalleryForm() {
                     <option value="1.91:1">1.91:1 (Default)</option>
                     <option value="1:1">1:1 (Square)</option>
                   </select>
-                  <div className="hidden group-hover:block absolute z-10 w-72 p-4 mt-2 bg-gray-800 rounded-lg border border-gray-700 shadow-lg">
+                  <div className="hidden group-focus-within:block absolute z-10 w-72 p-4 mt-2 bg-gray-800 rounded-lg border border-gray-700 shadow-lg">
                     <h4 className="font-semibold text-purple-400 mb-2">Frame Ratio</h4>
                     <p className="text-sm text-gray-300">Choose how your images will be displayed:</p>
                     <ul className="text-sm text-gray-300 mt-2 space-y-1">
