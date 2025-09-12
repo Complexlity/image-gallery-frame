@@ -1,5 +1,7 @@
 # 🖼️ Farcaster Image Gallery Frames
 
+![Farcaster Image Gallery Frames](/frames-gallery.png)
+
 A powerful gallery application that allows users to create interactive image galleries that can be shared and viewed as Farcaster Frames. Users can upload multiple images, customize the gallery appearance, and share it as a Farcaster Frame that can be interacted with directly on the Farcaster (https://www.farcaster.xyz/) platform.
 
 ## ✨ Features
